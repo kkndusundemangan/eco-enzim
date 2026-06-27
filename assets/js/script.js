@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const ownerMode = new URLSearchParams(window.location.search).get('owner') === 'demangan2026' || sessionStorage.getItem('ecoEnzimAdmin') === 'true' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   const ownerTools = document.getElementById('owner-tools');
   const fileInput = document.getElementById('img-file-input');
+  const saveStatus = document.getElementById('save-status');
   let currentTarget = null;
   let editingText = false;
   let saveTimer = null;
@@ -17,6 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const clearAdminSession = () => {
     sessionStorage.removeItem('ecoEnzimAdmin');
     localStorage.removeItem('ecoEnzimAdmin');
+  };
+
+  const setSaveStatus = (message, isError = false) => {
+    if (saveStatus) {
+      saveStatus.textContent = message;
+      saveStatus.style.color = isError ? '#b45309' : '#0f766e';
+    }
   };
 
   const setEditingState = () => {
@@ -87,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
       updatedAt: new Date().toISOString()
     };
 
+    setSaveStatus('Menyimpan ke server...');
+
     try {
       const response = await fetch('/api/content', {
         method: 'POST',
@@ -103,9 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
         mergeState(serverData);
       }
       persistLocalFallback();
+      setSaveStatus('Tersimpan ke server dan siap dipakai di semua perangkat.');
       return true;
     } catch (error) {
       persistLocalFallback();
+      setSaveStatus('Gagal menyimpan ke server. Periksa environment Cloudflare Pages dan lakukan deploy ulang.', true);
       return false;
     }
   };
@@ -131,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
         mergeState(payload);
       }
     } catch (error) {
+      setSaveStatus('Mode preview lokal aktif: penyimpanan online belum tersedia.', true);
       const legacyTexts = {};
       const legacyImages = {};
       document.querySelectorAll('.editable-text').forEach((el) => {
@@ -169,8 +182,12 @@ document.addEventListener('DOMContentLoaded', function () {
         editingText = !editingText;
         setEditingState();
         if (!editingText) {
-          await saveContent();
-          alert('Perubahan narasi dan gambar sudah disimpan untuk publik.');
+          const saved = await saveContent();
+          if (saved) {
+            alert('Perubahan narasi dan gambar sudah disimpan untuk publik.');
+          } else {
+            alert('Penyimpanan online gagal. Periksa environment Cloudflare Pages dan deploy ulang. Perubahan hanya tersimpan di browser Anda saat ini.');
+          }
         }
       });
     }
