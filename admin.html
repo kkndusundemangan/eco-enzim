@@ -34,7 +34,7 @@
       event.preventDefault();
       const pass = document.getElementById('admin-password').value;
       if (pass === 'demangan2026') {
-        localStorage.setItem('ecoEnzimAdmin', 'true');
+        sessionStorage.setItem('ecoEnzimAdmin', 'true');
         window.location.href = 'index.html?owner=demangan2026';
       } else {
         msg.textContent = 'Password salah. Coba lagi.';

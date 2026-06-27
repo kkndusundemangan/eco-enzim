@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const ownerMode = new URLSearchParams(window.location.search).get('owner') === 'demangan2026' || localStorage.getItem('ecoEnzimAdmin') === 'true' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const ownerMode = new URLSearchParams(window.location.search).get('owner') === 'demangan2026' || sessionStorage.getItem('ecoEnzimAdmin') === 'true' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   const ownerTools = document.getElementById('owner-tools');
   const fileInput = document.getElementById('img-file-input');
   let currentTarget = null;
@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
   if (ownerTools) {
     ownerTools.hidden = !ownerMode;
   }
+
+  const clearAdminSession = () => {
+    sessionStorage.removeItem('ecoEnzimAdmin');
+    localStorage.removeItem('ecoEnzimAdmin');
+  };
 
   const setEditingState = () => {
     document.querySelectorAll('.editable-text').forEach((el) => {
@@ -232,9 +237,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const clearBtn = document.getElementById('clear-preview');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
+      clearAdminSession();
       Object.keys(localStorage).filter((k) => k.startsWith('ecoEnzimAsset:') || k.startsWith('ecoEnzimText:') || k.startsWith('ecoEnzimAssetName:')).forEach((k) => localStorage.removeItem(k));
-      alert('Preview lokal berhasil dihapus. Halaman akan dimuat ulang.');
+      alert('Mode admin dan preview lokal berhasil dihapus. Halaman akan dimuat ulang.');
       location.reload();
+    });
+  }
+
+  const logoutBtn = document.getElementById('logout-admin');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      clearAdminSession();
+      window.location.href = 'index.html';
     });
   }
 
