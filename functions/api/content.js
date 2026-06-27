@@ -38,6 +38,23 @@ const DEFAULT_CONTENT = {
   }
 };
 
+const NO_STORE_HEADERS = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0'
+};
+
+function jsonResponse(body, init = {}) {
+  return new Response(JSON.stringify(body), {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      ...NO_STORE_HEADERS,
+      ...(init.headers || {})
+    }
+  });
+}
+
 async function getContentFromGitHub(env) {
   const owner = env.GITHUB_OWNER || env.GITHUB_REPOSITORY_OWNER;
   const repo = env.GITHUB_REPO || env.GITHUB_REPOSITORY;
@@ -108,9 +125,7 @@ async function saveContentToGitHub(env, content) {
 export async function onRequestGet({ env }) {
   const remoteContent = await getContentFromGitHub(env);
   const content = remoteContent || DEFAULT_CONTENT;
-  return new Response(JSON.stringify(content), {
-    headers: { 'Content-Type': 'application/json; charset=utf-8' }
-  });
+  return jsonResponse(content);
 }
 
 export async function onRequestPost({ request, env }) {
@@ -120,19 +135,11 @@ export async function onRequestPost({ request, env }) {
     const saved = await saveContentToGitHub(env, content);
 
     if (!saved) {
-      return new Response(JSON.stringify({ error: 'No GitHub storage configured' }), {
-        status: 503,
-        headers: { 'Content-Type': 'application/json; charset=utf-8' }
-      });
+      return jsonResponse({ error: 'No GitHub storage configured' }, { status: 503 });
     }
 
-    return new Response(JSON.stringify(content), {
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    });
+    return jsonResponse(content);
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    });
+    return jsonResponse({ error: error.message }, { status: 500 });
   }
 }

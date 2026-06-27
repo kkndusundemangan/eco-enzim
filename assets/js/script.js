@@ -98,10 +98,11 @@ document.addEventListener('DOMContentLoaded', function () {
     setSaveStatus('Menyimpan ke server...');
 
     try {
-      const response = await fetch('/api/content', {
+      const response = await fetch(`/api/content?ts=${Date.now()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: payload })
+        body: JSON.stringify({ content: payload }),
+        cache: 'no-store'
       });
 
       if (!response.ok) {
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     buildDefaultState();
 
     try {
-      const response = await fetch('/api/content', { cache: 'no-store' });
+      const response = await fetch(`/api/content?ts=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) {
         throw new Error('Tidak ada endpoint online');
       }
