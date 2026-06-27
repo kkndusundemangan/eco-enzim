@@ -1,0 +1,26 @@
+{
+  "texts": {
+    "heroBadge": "Gerakan warga · Ramah lingkungan · Gotong royong",
+    "heroHeadline": "Eco Enzim Rumahan: Dari Demangan, Untuk Bumi.",
+    "heroSubtext": "Solusi alami dari sisa dapur dan limbah organik yang diolah bersama oleh warga Dusun Demangan, Desa Mojoarum.",
+    "aboutTitle": "Eco enzim yang bermanfaat, aman, dan dekat dengan rumah.",
+    "aboutText": "Eco enzim adalah cairan serbaguna yang dihasilkan dari fermentasi sisa sayur, buah, gula (molase), dan air. Produk buatan ibu-ibu Dusun Demangan ini membantu membersihkan rumah, menyuburkan tanaman, dan menjaga lingkungan tetap sehat.",
+    "aboutNote": "Diproduksi secara gotong royong, aman untuk lingkungan, dan mudah dibuat di skala rumah tangga.",
+    "quoteText": "“Dari dapur rumah, untuk kebersihan lingkungan.”",
+    "compositionTitle": "Dibuat dari 100% Bahan <span class=\"accent\">Alami</span>",
+    "compositionText": "Setiap bahan dipilih dengan tujuan sederhana: memanfaatkan limbah organik menjadi sesuatu yang bermanfaat.",
+    "compositionRatio": "Rasio umum pembuatan: <strong>1 : 3 : 10</strong> (molase : bahan organik : air)",
+    "docsTitle": "Proses gotong royong warga Demangan",
+    "docsText": "Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.",
+    "galleryCaption": "Klik foto untuk mengganti dengan foto dokumentasi Anda.",
+    "ctaTitle": "Program Pembagian <span class=\"big-red\">GRATIS</span> untuk Warga!",
+    "ctaText": "Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan."
+  },
+  "images": {
+    "logo": "assets/images/Logo.png",
+    "product": "assets/images/product.jpg",
+    "gallery1": "assets/images/galeri-1.jpg",
+    "gallery2": "assets/images/galeri-2.jpeg",
+    "gallery3": "assets/images/galeri-3.jpg"
+  }
+}
