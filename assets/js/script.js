@@ -83,6 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (payload && payload.images) {
       state.images = { ...state.images, ...payload.images };
     }
+    if (payload && payload.updatedAt) {
+      state.updatedAt = payload.updatedAt;
+    }
   };
 
   const applyStateToDom = () => {
@@ -134,6 +137,24 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       if (!getResponse.ok) {
+
+    // Poll public raw content periodically so other devices see updates automatically
+    setInterval(async () => {
+      try {
+        const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
+        const r = await fetch(rawUrl, { cache: 'no-store' });
+        if (!r.ok) return;
+        const latest = await r.json();
+        if (latest && latest.updatedAt && latest.updatedAt !== state.updatedAt) {
+          mergeState(latest);
+          applyStateToDom();
+          state.updatedAt = latest.updatedAt;
+          setSaveStatus('Konten diperbarui otomatis.', false);
+        }
+      } catch (e) {
+        // ignore polling errors
+      }
+    }, 30000);
         throw new Error('Gagal membaca file dari GitHub');
       }
 
