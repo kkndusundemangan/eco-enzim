@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
     return localStorage.getItem('githubToken') || GITHUB_CONFIG.token;
   };
 
+  const encodeBase64 = (text) => {
+    return btoa(unescape(encodeURIComponent(text)));
+  };
+
   if (ownerTools) {
     ownerTools.hidden = !ownerMode;
   }
@@ -129,11 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const fileData = await getResponse.json();
-      const currentSha = fileData.sha;
+      let currentSha = fileData.sha;
 
       // 2. PUT updated content
-      const newContent = btoa(JSON.stringify(payload, null, 2));
-      const putResponse = await fetch(apiUrl, {
+      const newContent = encodeBase64(JSON.stringify(payload, null, 2));
+      let putResponse = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
           Authorization: `token ${token}`,
@@ -148,8 +152,36 @@ document.addEventListener('DOMContentLoaded', function () {
         cache: 'no-store'
       });
 
+      if (putResponse.status === 409) {
+        // Retry once if the file changed between GET and PUT
+        const retryResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
+          headers: { Authorization: `token ${token}` },
+          cache: 'no-store'
+        });
+        if (retryResponse.ok) {
+          const retryData = await retryResponse.json();
+          currentSha = retryData.sha;
+          putResponse = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+              Authorization: `token ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `Retry update content at ${new Date().toISOString()}`,
+              content: newContent,
+              sha: currentSha,
+              branch: GITHUB_CONFIG.branch
+            }),
+            cache: 'no-store'
+          });
+        }
+      }
+
       if (!putResponse.ok) {
-        throw new Error('Gagal menyimpan ke GitHub');
+        const errorBody = await putResponse.json().catch(() => ({}));
+        const errorMessage = errorBody.message || 'Gagal menyimpan ke GitHub';
+        throw new Error(errorMessage);
       }
 
       persistLocalFallback();
