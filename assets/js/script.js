@@ -127,17 +127,35 @@ document.addEventListener('DOMContentLoaded', function () {
       updatedAt: new Date().toISOString()
     };
 
-    setSaveStatus('Menyimpan ke GitHub...');
+    setSaveStatus('Menyimpan ke Cloudflare...');
 
-    try {
+    const saveViaCloudflare = async () => {
+      const response = await fetch('/api/save-content', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        cache: 'no-store'
+      });
+
+      if (response.ok) {
+        return true;
+      }
+
+      const errorBody = await response.json().catch(() => ({}));
+      const message = errorBody.error || response.statusText || 'Unknown Cloudflare error';
+      throw new Error(`Cloudflare save gagal: ${message}`);
+    };
+
+    const saveViaGitHub = async () => {
+      setSaveStatus('Menyimpan langsung ke GitHub...');
       const token = getGitHubToken();
       if (!token) {
-        throw new Error('GitHub token tidak ditemukan. Pastikan Anda sudah set GITHUB_TOKEN di localStorage');
+        throw new Error('GitHub token tidak ditemukan. Masukkan token atau gunakan Cloudflare Functions.');
       }
 
       const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-      
-      // 1. GET current file sha
       const getResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
         headers: { Authorization: `token ${token}` },
         cache: 'no-store'
@@ -170,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       let putResponse = await putContent(currentSha);
       if (putResponse.status === 409) {
-        // Retry up to 3 times if the file changed between GET and PUT
         for (let attempt = 1; attempt <= 3 && putResponse.status === 409; attempt += 1) {
           const retryResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
             headers: { Authorization: `token ${token}` },
@@ -189,13 +206,32 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(errorMessage);
       }
 
-      persistLocalFallback();
-      setSaveStatus('Tersimpan ke GitHub dan siap dipakai di semua perangkat.');
       return true;
-    } catch (error) {
+    };
+
+    try {
+      const saved = await saveViaCloudflare();
       persistLocalFallback();
-      const message = error.message || 'Gagal menyimpan ke GitHub';
-      setSaveStatus(`Gagal menyimpan ke GitHub: ${message}. Periksa GitHub token dan izin repo.`, true);
+      setSaveStatus('Tersimpan lewat Cloudflare dan siap dipakai di semua perangkat.');
+      return saved;
+    } catch (cloudError) {
+      // Cloudflare endpoint tidak tersedia atau ada error, coba fallback ke GitHub langsung.
+      if (cloudError.message.includes('404') || cloudError.message.includes('Cloudflare save gagal')) {
+        try {
+          const saved = await saveViaGitHub();
+          persistLocalFallback();
+          setSaveStatus('Tersimpan langsung ke GitHub dan siap dipakai di semua perangkat.');
+          return saved;
+        } catch (gitError) {
+          persistLocalFallback();
+          const message = gitError.message || 'Gagal menyimpan ke GitHub';
+          setSaveStatus(`Gagal menyimpan: ${message}`, true);
+          return false;
+        }
+      }
+      persistLocalFallback();
+      const message = cloudError.message || 'Gagal menyimpan ke Cloudflare';
+      setSaveStatus(`Gagal menyimpan: ${message}`, true);
       return false;
     }
   };

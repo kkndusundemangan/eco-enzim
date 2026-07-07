@@ -43,7 +43,17 @@ Agar panel admin bisa menyimpan perubahan ke publik, tambahkan environment varia
 - `GITHUB_BRANCH` = branch yang dipakai, misalnya `main`
 - `CONTENT_FILE_PATH` = `data/content.json`
 
-Setelah environment variables disimpan, deploy ulang project. Setelah itu, halaman admin bisa menyimpan teks dan gambar yang dipilih ke file JSON di repository Anda.
+Langkah 7 — Tambahkan Cloudflare Pages Function
+Di repo Anda sudah tersedia function:
+- `functions/api/save-content.js`
+
+Fungsi ini menerima POST dari halaman admin ke `/api/save-content`, lalu menulis konten ke file `data/content.json` di GitHub menggunakan token yang disimpan sebagai environment variable.
+
+Setelah environment variables disimpan dan function berada di `functions/api/save-content.js`, deploy ulang project. Setelah selesai, halaman admin akan mencoba menyimpan melalui Cloudflare function tanpa memerlukan token GitHub di browser.
+
+Catatan tambahan
+- Jika Cloudflare function belum tersedia atau ada error, halaman admin masih akan mencoba menyimpan langsung ke GitHub melalui token browser sebagai fallback.
+- Menyimpan gambar secara permanen tetap memerlukan push file gambar ke repo, karena `data/content.json` hanya menyimpan path atau data URL preview.
 
 Catatan penting
 - Jika Anda ingin perubahan gambar persist (tanpa edit HTML), upload file gambar baru ke repo dan push ke branch yang dipakai Cloudflare.
