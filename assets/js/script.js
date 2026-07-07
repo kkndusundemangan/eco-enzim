@@ -313,6 +313,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
+
+    const saveBtn = document.getElementById('save-content');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+        const saved = await saveContent();
+        if (saved) {
+          alert('Perubahan telah disimpan secara global ke GitHub. Segarkan halaman lain untuk melihat update.');
+        } else {
+          alert('Gagal menyimpan. Periksa GitHub token dan coba lagi.');
+        }
+      });
+    }
   }
 
   fileInput.addEventListener('change', (e) => {
