@@ -11,6 +11,19 @@ document.addEventListener('DOMContentLoaded', function () {
     images: {}
   };
 
+  // GitHub API Configuration
+  const GITHUB_CONFIG = {
+    owner: 'kkndusudemangan',
+    repo: 'eco-enzim',
+    branch: 'main',
+    path: 'data/content.json',
+    token: '' // Akan diisi dari localStorage jika ada
+  };
+
+  const getGitHubToken = () => {
+    return localStorage.getItem('githubToken') || GITHUB_CONFIG.token;
+  };
+
   if (ownerTools) {
     ownerTools.hidden = !ownerMode;
   }
@@ -95,30 +108,56 @@ document.addEventListener('DOMContentLoaded', function () {
       updatedAt: new Date().toISOString()
     };
 
-    setSaveStatus('Menyimpan ke server...');
+    setSaveStatus('Menyimpan ke GitHub...');
 
     try {
-      const response = await fetch(`/api/content?ts=${Date.now()}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: payload }),
+      const token = getGitHubToken();
+      if (!token) {
+        throw new Error('GitHub token tidak ditemukan. Pastikan Anda sudah set GITHUB_TOKEN di localStorage');
+      }
+
+      const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+      
+      // 1. GET current file sha
+      const getResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
+        headers: { Authorization: `token ${token}` },
         cache: 'no-store'
       });
 
-      if (!response.ok) {
-        throw new Error('Gagal menyimpan ke server');
+      if (!getResponse.ok) {
+        throw new Error('Gagal membaca file dari GitHub');
       }
 
-      const serverData = await response.json();
-      if (serverData && serverData.texts) {
-        mergeState(serverData);
+      const fileData = await getResponse.json();
+      const currentSha = fileData.sha;
+
+      // 2. PUT updated content
+      const newContent = btoa(JSON.stringify(payload, null, 2));
+      const putResponse = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Update content at ${new Date().toISOString()}`,
+          content: newContent,
+          sha: currentSha,
+          branch: GITHUB_CONFIG.branch
+        }),
+        cache: 'no-store'
+      });
+
+      if (!putResponse.ok) {
+        throw new Error('Gagal menyimpan ke GitHub');
       }
+
       persistLocalFallback();
-      setSaveStatus('Tersimpan ke server dan siap dipakai di semua perangkat.');
+      setSaveStatus('Tersimpan ke GitHub dan siap dipakai di semua perangkat.');
       return true;
     } catch (error) {
       persistLocalFallback();
-      setSaveStatus('Gagal menyimpan ke server. Periksa konfigurasi hosting/serverless dan lakukan deploy ulang.', true);
+      setSaveStatus(`Gagal menyimpan ke GitHub: ${error.message}. Periksa GitHub token.`, true);
       return false;
     }
   };
@@ -135,16 +174,29 @@ document.addEventListener('DOMContentLoaded', function () {
     buildDefaultState();
 
     try {
-      const response = await fetch(`/api/content?ts=${Date.now()}`, { cache: 'no-store' });
-      if (!response.ok) {
-        throw new Error('Tidak ada endpoint online');
+      const token = getGitHubToken();
+      if (!token) {
+        throw new Error('GitHub token tidak ditemukan');
       }
-      const payload = await response.json();
-      if (payload && payload.texts) {
-        mergeState(payload);
+
+      const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+      const response = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
+        headers: { Authorization: `token ${token}` },
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        throw new Error('Tidak bisa membaca dari GitHub');
+      }
+
+      const fileData = await response.json();
+      const content = JSON.parse(atob(fileData.content));
+      
+      if (content && content.texts) {
+        mergeState(content);
       }
     } catch (error) {
-      setSaveStatus('Mode preview lokal aktif: penyimpanan online belum tersedia.', true);
+      setSaveStatus('Mode preview lokal aktif: GitHub token belum dikonfigurasi.', true);
       const legacyTexts = {};
       const legacyImages = {};
       document.querySelectorAll('.editable-text').forEach((el) => {
