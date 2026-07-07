@@ -21,7 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const getGitHubToken = () => {
-    return localStorage.getItem('githubToken') || GITHUB_CONFIG.token;
+    let token = localStorage.getItem('githubToken') || GITHUB_CONFIG.token || '';
+    token = token.trim();
+    if ((token.startsWith('"') && token.endsWith('"')) || (token.startsWith("'") && token.endsWith("'"))) {
+      token = token.slice(1, -1);
+    }
+    return token;
   };
 
   const encodeBase64 = (text) => {
@@ -179,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
       return true;
     } catch (error) {
       persistLocalFallback();
-      setSaveStatus(`Gagal menyimpan ke GitHub: ${error.message}. Periksa GitHub token.`, true);
+      const message = error.message || 'Gagal menyimpan ke GitHub';
+      setSaveStatus(`Gagal menyimpan ke GitHub: ${message}. Periksa GitHub token dan izin repo.`, true);
       return false;
     }
   };
