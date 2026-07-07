@@ -134,53 +134,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const fileData = await getResponse.json();
       let currentSha = fileData.sha;
-
-      // 2. PUT updated content
       const newContent = encodeBase64(JSON.stringify(payload, null, 2));
-      let putResponse = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: `Update content at ${new Date().toISOString()}`,
-          content: newContent,
-          sha: currentSha,
-          branch: GITHUB_CONFIG.branch
-        }),
-        cache: 'no-store'
-      });
 
-      if (putResponse.status === 409) {
-        // Retry once if the file changed between GET and PUT
-        const retryResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
-          headers: { Authorization: `token ${token}` },
+      const putContent = async (sha) => {
+        return await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Update content at ${new Date().toISOString()}`,
+            content: newContent,
+            sha,
+            branch: GITHUB_CONFIG.branch
+          }),
           cache: 'no-store'
         });
-        if (retryResponse.ok) {
-          const retryData = await retryResponse.json();
-          currentSha = retryData.sha;
-          putResponse = await fetch(apiUrl, {
-            method: 'PUT',
-            headers: {
-              Authorization: `token ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              message: `Retry update content at ${new Date().toISOString()}`,
-              content: newContent,
-              sha: currentSha,
-              branch: GITHUB_CONFIG.branch
-            }),
+      };
+
+      let putResponse = await putContent(currentSha);
+      if (putResponse.status === 409) {
+        // Retry up to 3 times if the file changed between GET and PUT
+        for (let attempt = 1; attempt <= 3 && putResponse.status === 409; attempt += 1) {
+          const retryResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
+            headers: { Authorization: `token ${token}` },
             cache: 'no-store'
           });
+          if (!retryResponse.ok) break;
+          const retryData = await retryResponse.json();
+          currentSha = retryData.sha;
+          putResponse = await putContent(currentSha);
         }
       }
 
       if (!putResponse.ok) {
         const errorBody = await putResponse.json().catch(() => ({}));
-        const errorMessage = errorBody.message || 'Gagal menyimpan ke GitHub';
+        const errorMessage = [putResponse.status, errorBody.message || 'Gagal menyimpan ke GitHub'].filter(Boolean).join(' - ');
         throw new Error(errorMessage);
       }
 
