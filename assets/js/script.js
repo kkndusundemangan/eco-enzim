@@ -325,6 +325,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
+
+    const tokenInput = document.getElementById('github-token');
+    const tokenSaveBtn = document.getElementById('save-github-token');
+    if (tokenInput && tokenSaveBtn) {
+      const existingToken = localStorage.getItem('githubToken');
+      if (existingToken) {
+        tokenInput.value = existingToken;
+      }
+
+      tokenSaveBtn.addEventListener('click', () => {
+        const value = tokenInput.value.trim();
+        if (!value) {
+          alert('Masukkan token GitHub terlebih dahulu.');
+          return;
+        }
+        localStorage.setItem('githubToken', value);
+        alert('GitHub token disimpan di browser ini. Silakan klik Simpan sekarang untuk menyimpan konten.');
+      });
+    }
   }
 
   fileInput.addEventListener('change', (e) => {
