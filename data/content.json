@@ -1,12 +1,12 @@
 {
   "texts": {
-    "heroBadge": "Gerakan warga ÃÂÃÂ· Ramah lingkungan ÃÂÃÂ· Gotong royong",
+    "heroBadge": "Gerakan warga ÃÂÃÂÃÂÃÂ· Ramah lingkungan ÃÂÃÂÃÂÃÂ· Gotong royong",
     "heroHeadline": "Eco Enzim Rumahan: Dari Demangan, Untuk Bumi.",
     "heroSubtext": "Solusi alami dari sisa dapur dan limbah organik yang diolah bersama oleh warga Dusun Demangan, Desa Mojoarum.",
     "aboutTitle": "Eco enzim yang bermanfaat sekali, aman, dan dekat dengan rumah anda lors<span style=\"font-size: clamp(1.5rem, 2.2vw, 2.2rem);\">.</span>",
     "aboutText": "Eco enzim adalah cairan serbaguna yang dihasilkan dari fermentasi sisa sayur, buah, gula (molase), dan air. Produk buatan ibu-ibu Dusun Demangan ini membantu membersihkan rumah, menyuburkan tanaman, dan menjaga lingkungan tetap sehat.",
     "aboutNote": "Diproduksi secara gotong royong, aman untuk lingkungan, dan mudah dibuat di skala rumah tangga.",
-    "quoteText": "ÃÂ¢ÃÂÃÂDari dapur rumah, untuk kebersihan lingkungan.ÃÂ¢ÃÂÃÂ",
+    "quoteText": "ÃÂÃÂ¢ÃÂÃÂÃÂÃÂDari dapur rumah, untuk kebersihan lingkungan.ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ",
     "compositionTitle": "Dibuat dari 100% Bahan <span class=\"accent\">Alami</span>",
     "compositionText": "Setiap bahan dipilih dengan tujuan sederhana: memanfaatkan limbah organik menjadi sesuatu yang bermanfaat.",
     "compositionRatio": "Rasio umum pembuatan: <strong>1 : 3 : 10</strong> (molase : bahan organik : air)",
@@ -23,5 +23,5 @@
     "gallery2": "assets/images/galeri-2.jpeg",
     "gallery3": "assets/images/galeri-3.jpg"
   },
-  "updatedAt": "2026-07-07T11:29:18.408Z"
+  "updatedAt": "2026-07-07T11:35:52.129Z"
 }
