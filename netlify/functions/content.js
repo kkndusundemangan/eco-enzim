@@ -34,7 +34,7 @@ const NO_STORE_HEADERS = {
 
 function jsonResponse(body, status = 200) {
   return {
-    status,
+    statusCode: status,
     headers: NO_STORE_HEADERS,
     body: JSON.stringify(body, null, 2)
   };
