@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return true;
     } catch (error) {
       persistLocalFallback();
-      setSaveStatus('Gagal menyimpan ke server. Periksa environment Cloudflare Pages dan lakukan deploy ulang.', true);
+      setSaveStatus('Gagal menyimpan ke server. Periksa konfigurasi hosting/serverless dan lakukan deploy ulang.', true);
       return false;
     }
   };
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (saved) {
             alert('Perubahan narasi dan gambar sudah disimpan untuk publik.');
           } else {
-            alert('Penyimpanan online gagal. Periksa environment Cloudflare Pages dan deploy ulang. Perubahan hanya tersimpan di browser Anda saat ini.');
+            alert('Penyimpanan online gagal. Periksa konfigurasi hosting/serverless dan deploy ulang. Perubahan hanya tersimpan di browser Anda saat ini.');
           }
         }
       });
