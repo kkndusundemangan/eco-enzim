@@ -269,9 +269,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!editingText) {
           const saved = await saveContent();
           if (saved) {
-            alert('Perubahan narasi dan gambar sudah disimpan untuk publik.');
+            alert('Perubahan narasi dan gambar sudah disimpan ke GitHub.');
           } else {
-            alert('Penyimpanan online gagal. Periksa konfigurasi hosting/serverless dan deploy ulang. Perubahan hanya tersimpan di browser Anda saat ini.');
+            alert('Penyimpanan online gagal. Periksa GitHub token atau izin repo GitHub Anda. Perubahan hanya tersimpan di browser Anda saat ini.');
           }
         }
       });
