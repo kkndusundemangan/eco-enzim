@@ -211,48 +211,62 @@ document.addEventListener('DOMContentLoaded', function () {
   const loadContent = async () => {
     buildDefaultState();
 
+    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
     try {
-      const token = getGitHubToken();
-      if (!token) {
-        throw new Error('GitHub token tidak ditemukan');
+      const rawResponse = await fetch(rawUrl, { cache: 'no-store' });
+      if (!rawResponse.ok) {
+        throw new Error('Tidak bisa membaca dari GitHub public raw');
       }
-
-      const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-      const response = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
-        headers: { Authorization: `token ${token}` },
-        cache: 'no-store'
-      });
-
-      if (!response.ok) {
-        throw new Error('Tidak bisa membaca dari GitHub');
+      const rawContent = await rawResponse.json();
+      if (rawContent && rawContent.texts) {
+        mergeState(rawContent);
       }
-
-      const fileData = await response.json();
-      const content = JSON.parse(base64ToUtf8(fileData.content));
-      if (content && content.texts) {
-        mergeState(content);
-      }
-    } catch (error) {
-      setSaveStatus('Mode preview lokal aktif: GitHub token belum dikonfigurasi.', true);
-      const legacyTexts = {};
-      const legacyImages = {};
-      document.querySelectorAll('.editable-text').forEach((el) => {
-        const key = el.getAttribute('data-edit-key');
-        if (!key) return;
-        const savedText = localStorage.getItem(`ecoEnzimText:${key}`);
-        if (savedText) {
-          legacyTexts[key] = savedText;
+      setSaveStatus('Konten dimuat dari GitHub public.', false);
+    } catch (publicError) {
+      try {
+        const token = getGitHubToken();
+        if (!token) {
+          throw new Error('GitHub token tidak ditemukan');
         }
-      });
-      document.querySelectorAll('.editable-image').forEach((img) => {
-        const key = img.getAttribute('data-image-key');
-        if (!key) return;
-        const savedValue = localStorage.getItem(`ecoEnzimAsset:${key}`);
-        if (savedValue) {
-          legacyImages[key] = savedValue;
+
+        const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+        const response = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
+          headers: { Authorization: `token ${token}` },
+          cache: 'no-store'
+        });
+
+        if (!response.ok) {
+          throw new Error('Tidak bisa membaca dari GitHub API');
         }
-      });
-      mergeState({ texts: legacyTexts, images: legacyImages });
+
+        const fileData = await response.json();
+        const content = JSON.parse(base64ToUtf8(fileData.content));
+        if (content && content.texts) {
+          mergeState(content);
+        }
+        setSaveStatus('Konten dimuat dari GitHub API.', false);
+      } catch (error) {
+        setSaveStatus('Mode preview lokal aktif: GitHub token belum dikonfigurasi.', true);
+        const legacyTexts = {};
+        const legacyImages = {};
+        document.querySelectorAll('.editable-text').forEach((el) => {
+          const key = el.getAttribute('data-edit-key');
+          if (!key) return;
+          const savedText = localStorage.getItem(`ecoEnzimText:${key}`);
+          if (savedText) {
+            legacyTexts[key] = savedText;
+          }
+        });
+        document.querySelectorAll('.editable-image').forEach((img) => {
+          const key = img.getAttribute('data-image-key');
+          if (!key) return;
+          const savedValue = localStorage.getItem(`ecoEnzimAsset:${key}`);
+          if (savedValue) {
+            legacyImages[key] = savedValue;
+          }
+        });
+        mergeState({ texts: legacyTexts, images: legacyImages });
+      }
     }
 
     applyStateToDom();
