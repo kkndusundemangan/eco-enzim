@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // GitHub API Configuration
   const GITHUB_CONFIG = {
-    owner: 'kkndusudemangan',
+    owner: 'kkndusundemangan',
     repo: 'eco-enzim',
     branch: 'main',
     path: 'data/content.json',
