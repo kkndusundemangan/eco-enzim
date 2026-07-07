@@ -33,6 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return btoa(unescape(encodeURIComponent(text)));
   };
 
+  const base64ToUtf8 = (b64) => {
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  };
+
   if (ownerTools) {
     ownerTools.hidden = !ownerMode;
   }
@@ -137,24 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       if (!getResponse.ok) {
-
-    // Poll public raw content periodically so other devices see updates automatically
-    setInterval(async () => {
-      try {
-        const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
-        const r = await fetch(rawUrl, { cache: 'no-store' });
-        if (!r.ok) return;
-        const latest = await r.json();
-        if (latest && latest.updatedAt && latest.updatedAt !== state.updatedAt) {
-          mergeState(latest);
-          applyStateToDom();
-          state.updatedAt = latest.updatedAt;
-          setSaveStatus('Konten diperbarui otomatis.', false);
-        }
-      } catch (e) {
-        // ignore polling errors
-      }
-    }, 30000);
         throw new Error('Gagal membaca file dari GitHub');
       }
 
@@ -239,8 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const fileData = await response.json();
-      const content = JSON.parse(atob(fileData.content));
-      
+      const content = JSON.parse(base64ToUtf8(fileData.content));
       if (content && content.texts) {
         mergeState(content);
       }
@@ -268,6 +256,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     applyStateToDom();
+
+    // Poll public raw content periodically so other devices see updates automatically
+    setInterval(async () => {
+      try {
+        const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
+        const r = await fetch(rawUrl, { cache: 'no-store' });
+        if (!r.ok) return;
+        const latest = await r.json();
+        if (latest && latest.updatedAt && latest.updatedAt !== state.updatedAt) {
+          mergeState(latest);
+          applyStateToDom();
+          state.updatedAt = latest.updatedAt;
+          setSaveStatus('Konten diperbarui otomatis.', false);
+        }
+      } catch (e) {
+        // ignore polling errors
+      }
+    }, 30000);
   };
 
   if (ownerMode) {
