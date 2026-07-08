@@ -1,3 +1,16 @@
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+  'Access-Control-Max-Age': '86400',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export async function onRequestOptions(context) {
+  return new Response(null, {
+    headers: corsHeaders,
+  });
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   const githubToken = env.GITHUB_TOKEN;
@@ -9,7 +22,7 @@ export async function onRequestPost(context) {
   if (!githubToken || !githubOwner || !githubRepo) {
     return new Response(JSON.stringify({ error: 'GitHub secrets not configured in Cloudflare.' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
   }
 
@@ -19,14 +32,14 @@ export async function onRequestPost(context) {
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Request body must be valid JSON.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
   }
 
   if (!body || typeof body !== 'object' || !body.texts || !body.images) {
     return new Response(JSON.stringify({ error: 'Payload must include texts and images.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
   }
 
@@ -45,7 +58,7 @@ export async function onRequestPost(context) {
     const errorData = await shaResponse.json().catch(() => ({}));
     return new Response(JSON.stringify({ error: 'Failed to read content file from GitHub.', details: errorData }), {
       status: shaResponse.status || 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
   }
 
@@ -77,12 +90,12 @@ export async function onRequestPost(context) {
     const errorData = await putResponse.json().catch(() => ({}));
     return new Response(JSON.stringify({ error: 'Failed to write content to GitHub.', details: errorData }), {
       status: putResponse.status || 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
   }
 
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json', ...corsHeaders }
   });
 }
