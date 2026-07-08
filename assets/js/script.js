@@ -154,19 +154,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const loadContent = async () => {
     buildDefaultState();
 
-    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
+    const contentUrl = `./data/content.json?ts=${Date.now()}`;
     try {
-      const rawResponse = await fetch(rawUrl, { cache: 'no-store' });
-      if (!rawResponse.ok) {
-        throw new Error('Tidak bisa membaca dari GitHub public raw');
+      const response = await fetch(contentUrl, { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error('Tidak bisa membaca file konten.');
       }
-      const rawContent = await rawResponse.json();
-      if (rawContent && rawContent.texts) {
-        mergeState(rawContent);
+      const jsonContent = await response.json();
+      if (jsonContent && jsonContent.texts) {
+        mergeState(jsonContent);
       }
-      setSaveStatus('Konten dimuat dari GitHub public.', false);
-    } catch (publicError) {
-      setSaveStatus('Mode preview lokal aktif: tidak bisa memuat GitHub public.', true);
+      setSaveStatus('Konten dimuat dari data/content.json.', false);
+    } catch (loadError) {
+      setSaveStatus('Mode preview lokal aktif: tidak bisa memuat content.json.', true);
       const legacyTexts = {};
       const legacyImages = {};
       document.querySelectorAll('.editable-text').forEach((el) => {
@@ -190,11 +190,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     applyStateToDom();
 
-    // Poll public raw content periodically so other devices see updates automatically
+    // Poll content.json periodically so other devices see updates automatically
     setInterval(async () => {
       try {
-        const rawUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.path}?ts=${Date.now()}`;
-        const r = await fetch(rawUrl, { cache: 'no-store' });
+        const pollUrl = `./data/content.json?ts=${Date.now()}`;
+        const r = await fetch(pollUrl, { cache: 'no-store' });
         if (!r.ok) return;
         const latest = await r.json();
         if (latest && latest.updatedAt && latest.updatedAt !== state.updatedAt) {
