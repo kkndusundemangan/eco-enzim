@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setSaveStatus('Menyimpan ke Cloudflare...');
 
     const saveViaCloudflare = async () => {
-      const response = await fetch('https://ecoenzim.pages.dev/api/save-content', {
+      const response = await fetch('https://eco-enzim.pages.dev/api/save-content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
