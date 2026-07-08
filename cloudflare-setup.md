@@ -10,10 +10,9 @@ Cloudflare akan melakukan write ke GitHub menggunakan token yang disimpan aman d
 ## Bagian frontend yang berubah
 - `assets/js/script.js`
   - sekarang mencoba POST ke `/api/save-content`
-  - jika Cloudflare function gagal, fallback ke GitHub langsung
+  - tidak lagi memerlukan token GitHub di browser
 - `index.html`
   - tombol `Simpan sekarang` tetap sama
-  - panel token tetap ada untuk fallback GitHub jika Cloudflare belum aktif
 
 ## Langkah deployment Cloudflare Pages
 1. Pastikan repo sudah di GitHub.
@@ -43,5 +42,5 @@ Cloudflare Pages mendukung build dan preview lokal dengan `wrangler`.
 Tapi untuk saat ini jika Anda hanya menggunakan Pages, cukup deploy dan tes langsung.
 
 ## Catatan penting
-- Jangan masukkan `GITHUB_TOKEN` di browser jika Cloudflare sudah aktif.
+- Jangan masukkan `GITHUB_TOKEN` di browser; Cloudflare function sudah menangani semua penulisan ke GitHub.
 - Gambar permanen masih perlu push sebagai file ke repo jika Anda ingin tampil untuk semua pengunjung.

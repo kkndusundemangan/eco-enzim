@@ -11,24 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     images: {}
   };
 
-  // GitHub API Configuration
-  const GITHUB_CONFIG = {
-    owner: 'kkndusundemangan',
-    repo: 'eco-enzim',
-    branch: 'main',
-    path: 'data/content.json',
-    token: '' // Akan diisi dari localStorage jika ada
-  };
-
-  const getGitHubToken = () => {
-    let token = localStorage.getItem('githubToken') || GITHUB_CONFIG.token || '';
-    token = token.trim();
-    if ((token.startsWith('"') && token.endsWith('"')) || (token.startsWith("'") && token.endsWith("'"))) {
-      token = token.slice(1, -1);
-    }
-    return token;
-  };
-
   const encodeBase64 = (text) => {
     return btoa(unescape(encodeURIComponent(text)));
   };
@@ -148,87 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
       throw new Error(`Cloudflare save gagal: ${message}`);
     };
 
-    const saveViaGitHub = async () => {
-      setSaveStatus('Menyimpan langsung ke GitHub...');
-      const token = getGitHubToken();
-      if (!token) {
-        throw new Error('GitHub token tidak ditemukan. Masukkan token atau gunakan Cloudflare Functions.');
-      }
-
-      const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-      const getResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
-        headers: { Authorization: `token ${token}` },
-        cache: 'no-store'
-      });
-
-      if (!getResponse.ok) {
-        throw new Error('Gagal membaca file dari GitHub');
-      }
-
-      const fileData = await getResponse.json();
-      let currentSha = fileData.sha;
-      const newContent = encodeBase64(JSON.stringify(payload, null, 2));
-
-      const putContent = async (sha) => {
-        return await fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            Authorization: `token ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `Update content at ${new Date().toISOString()}`,
-            content: newContent,
-            sha,
-            branch: GITHUB_CONFIG.branch
-          }),
-          cache: 'no-store'
-        });
-      };
-
-      let putResponse = await putContent(currentSha);
-      if (putResponse.status === 409) {
-        for (let attempt = 1; attempt <= 3 && putResponse.status === 409; attempt += 1) {
-          const retryResponse = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
-            headers: { Authorization: `token ${token}` },
-            cache: 'no-store'
-          });
-          if (!retryResponse.ok) break;
-          const retryData = await retryResponse.json();
-          currentSha = retryData.sha;
-          putResponse = await putContent(currentSha);
-        }
-      }
-
-      if (!putResponse.ok) {
-        const errorBody = await putResponse.json().catch(() => ({}));
-        const errorMessage = [putResponse.status, errorBody.message || 'Gagal menyimpan ke GitHub'].filter(Boolean).join(' - ');
-        throw new Error(errorMessage);
-      }
-
-      return true;
-    };
-
     try {
       const saved = await saveViaCloudflare();
       persistLocalFallback();
       setSaveStatus('Tersimpan lewat Cloudflare dan siap dipakai di semua perangkat.');
       return saved;
     } catch (cloudError) {
-      // Cloudflare endpoint tidak tersedia atau ada error, coba fallback ke GitHub langsung.
-      if (cloudError.message.includes('404') || cloudError.message.includes('Cloudflare save gagal')) {
-        try {
-          const saved = await saveViaGitHub();
-          persistLocalFallback();
-          setSaveStatus('Tersimpan langsung ke GitHub dan siap dipakai di semua perangkat.');
-          return saved;
-        } catch (gitError) {
-          persistLocalFallback();
-          const message = gitError.message || 'Gagal menyimpan ke GitHub';
-          setSaveStatus(`Gagal menyimpan: ${message}`, true);
-          return false;
-        }
-      }
       persistLocalFallback();
       const message = cloudError.message || 'Gagal menyimpan ke Cloudflare';
       setSaveStatus(`Gagal menyimpan: ${message}`, true);
@@ -259,50 +166,26 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       setSaveStatus('Konten dimuat dari GitHub public.', false);
     } catch (publicError) {
-      try {
-        const token = getGitHubToken();
-        if (!token) {
-          throw new Error('GitHub token tidak ditemukan');
+      setSaveStatus('Mode preview lokal aktif: tidak bisa memuat GitHub public.', true);
+      const legacyTexts = {};
+      const legacyImages = {};
+      document.querySelectorAll('.editable-text').forEach((el) => {
+        const key = el.getAttribute('data-edit-key');
+        if (!key) return;
+        const savedText = localStorage.getItem(`ecoEnzimText:${key}`);
+        if (savedText) {
+          legacyTexts[key] = savedText;
         }
-
-        const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-        const response = await fetch(apiUrl + `?ref=${GITHUB_CONFIG.branch}`, {
-          headers: { Authorization: `token ${token}` },
-          cache: 'no-store'
-        });
-
-        if (!response.ok) {
-          throw new Error('Tidak bisa membaca dari GitHub API');
+      });
+      document.querySelectorAll('.editable-image').forEach((img) => {
+        const key = img.getAttribute('data-image-key');
+        if (!key) return;
+        const savedValue = localStorage.getItem(`ecoEnzimAsset:${key}`);
+        if (savedValue) {
+          legacyImages[key] = savedValue;
         }
-
-        const fileData = await response.json();
-        const content = JSON.parse(base64ToUtf8(fileData.content));
-        if (content && content.texts) {
-          mergeState(content);
-        }
-        setSaveStatus('Konten dimuat dari GitHub API.', false);
-      } catch (error) {
-        setSaveStatus('Mode preview lokal aktif: GitHub token belum dikonfigurasi.', true);
-        const legacyTexts = {};
-        const legacyImages = {};
-        document.querySelectorAll('.editable-text').forEach((el) => {
-          const key = el.getAttribute('data-edit-key');
-          if (!key) return;
-          const savedText = localStorage.getItem(`ecoEnzimText:${key}`);
-          if (savedText) {
-            legacyTexts[key] = savedText;
-          }
-        });
-        document.querySelectorAll('.editable-image').forEach((img) => {
-          const key = img.getAttribute('data-image-key');
-          if (!key) return;
-          const savedValue = localStorage.getItem(`ecoEnzimAsset:${key}`);
-          if (savedValue) {
-            legacyImages[key] = savedValue;
-          }
-        });
-        mergeState({ texts: legacyTexts, images: legacyImages });
-      }
+      });
+      mergeState({ texts: legacyTexts, images: legacyImages });
     }
 
     applyStateToDom();
@@ -342,9 +225,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!editingText) {
           const saved = await saveContent();
           if (saved) {
-            alert('Perubahan narasi dan gambar sudah disimpan ke GitHub.');
+            alert('Perubahan narasi dan gambar sudah disimpan. Segarkan halaman lain untuk melihat perubahan.');
           } else {
-            alert('Penyimpanan online gagal. Periksa GitHub token atau izin repo GitHub Anda. Perubahan hanya tersimpan di browser Anda saat ini.');
+            alert('Penyimpanan online gagal. Pastikan Cloudflare function `/api/save-content` sudah aktif. Perubahan hanya tersimpan di browser Anda saat ini.');
           }
         }
       });
@@ -355,29 +238,10 @@ document.addEventListener('DOMContentLoaded', function () {
       saveBtn.addEventListener('click', async () => {
         const saved = await saveContent();
         if (saved) {
-          alert('Perubahan telah disimpan secara global ke GitHub. Segarkan halaman lain untuk melihat update.');
+          alert('Perubahan telah disimpan melalui Cloudflare. Segarkan halaman lain untuk melihat update.');
         } else {
-          alert('Gagal menyimpan. Periksa GitHub token dan coba lagi.');
+          alert('Gagal menyimpan melalui Cloudflare. Pastikan function `/api/save-content` sudah diterapkan.');
         }
-      });
-    }
-
-    const tokenInput = document.getElementById('github-token');
-    const tokenSaveBtn = document.getElementById('save-github-token');
-    if (tokenInput && tokenSaveBtn) {
-      const existingToken = localStorage.getItem('githubToken');
-      if (existingToken) {
-        tokenInput.value = existingToken;
-      }
-
-      tokenSaveBtn.addEventListener('click', () => {
-        const value = tokenInput.value.trim();
-        if (!value) {
-          alert('Masukkan token GitHub terlebih dahulu.');
-          return;
-        }
-        localStorage.setItem('githubToken', value);
-        alert('GitHub token disimpan di browser ini. Silakan klik Simpan sekarang untuk menyimpan konten.');
       });
     }
   }

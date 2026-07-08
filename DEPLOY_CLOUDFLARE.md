@@ -49,11 +49,11 @@ Di repo Anda sudah tersedia function:
 
 Fungsi ini menerima POST dari halaman admin ke `/api/save-content`, lalu menulis konten ke file `data/content.json` di GitHub menggunakan token yang disimpan sebagai environment variable.
 
-Setelah environment variables disimpan dan function berada di `functions/api/save-content.js`, deploy ulang project. Setelah selesai, halaman admin akan mencoba menyimpan melalui Cloudflare function tanpa memerlukan token GitHub di browser.
+Setelah environment variables disimpan dan function berada di `functions/api/save-content.js`, deploy ulang project. Setelah selesai, halaman admin akan menyimpan perubahan melalui Cloudflare function tanpa memerlukan token GitHub di browser.
 
 Catatan tambahan
-- Jika Cloudflare function belum tersedia atau ada error, halaman admin masih akan mencoba menyimpan langsung ke GitHub melalui token browser sebagai fallback.
-- Menyimpan gambar secara permanen tetap memerlukan push file gambar ke repo, karena `data/content.json` hanya menyimpan path atau data URL preview.
+- Jika Cloudflare function belum tersedia atau ada error, penyimpanan akan gagal; halaman masih dapat menggunakan data lokal sebagai preview, tetapi perubahan tidak akan tersimpan ke GitHub.
+- Menyimpan gambar secara permanen tetap memerlukan upload file gambar baru dan push ke repo, karena `data/content.json` hanya menyimpan path atau data URL preview.
 
 Catatan penting
 - Jika Anda ingin perubahan gambar persist (tanpa edit HTML), upload file gambar baru ke repo dan push ke branch yang dipakai Cloudflare.
