@@ -20,7 +20,15 @@ export async function onRequestPost(context) {
   const contentFilePath = env.CONTENT_FILE_PATH || 'data/content.json';
 
   if (!githubToken || !githubOwner || !githubRepo) {
-    return new Response(JSON.stringify({ error: 'GitHub secrets not configured in Cloudflare.' }), {
+    return new Response(JSON.stringify({ 
+      error: 'GitHub secrets not configured in Cloudflare.',
+      debug: {
+        hasToken: !!githubToken,
+        hasOwner: !!githubOwner,
+        hasRepo: !!githubRepo,
+        envKeys: Object.keys(env || {})
+      }
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
