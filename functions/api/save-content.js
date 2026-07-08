@@ -54,24 +54,38 @@ export async function onRequestPost(context) {
   const apiUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${contentFilePath}`;
   const headers = {
     Authorization: `token ${githubToken}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'User-Agent': 'Cloudflare-Pages-eco-enzim'
   };
 
-  const shaResponse = await fetch(apiUrl + `?ref=${githubBranch}`, {
+  const treeUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/git/trees/${githubBranch}?recursive=1`;
+  const treeResponse = await fetch(treeUrl, {
     headers,
     cache: 'no-store'
   });
 
-  if (!shaResponse.ok) {
-    const errorData = await shaResponse.json().catch(() => ({}));
-    return new Response(JSON.stringify({ error: 'Failed to read content file from GitHub.', details: errorData }), {
-      status: shaResponse.status || 500,
+  let sha;
+  if (!treeResponse.ok) {
+    const rawText = await treeResponse.text().catch(() => '');
+    let errorData = {};
+    try { errorData = JSON.parse(rawText); } catch(e) {}
+    return new Response(JSON.stringify({ 
+      error: 'Failed to read repository tree from GitHub.', 
+      status: treeResponse.status,
+      rawText: rawText.substring(0, 500),
+      details: errorData 
+    }), {
+      status: treeResponse.status || 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
+  } else {
+    const treeData = await treeResponse.json();
+    const fileNode = treeData.tree.find(node => node.path === contentFilePath);
+    if (fileNode) {
+      sha = fileNode.sha;
+    }
   }
 
-  const shaData = await shaResponse.json();
-  const sha = shaData.sha;
   const payload = {
     texts: body.texts,
     images: body.images,
