@@ -12,6 +12,7 @@
   --font-main: 'Inter', system-ui, Arial, sans-serif;
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-main);margin:0;color:#10284d;line-height:1.6;background:#f5f9ff;}
 img{display:block;max-width:100%}
