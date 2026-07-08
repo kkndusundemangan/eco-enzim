@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
     images: {}
   };
 
+  // UI Elements for Progress and Toolbar
+  const progressBar = document.getElementById('save-progress-bar');
+  const progressContainer = document.getElementById('save-progress-container');
+  const rtToolbar = document.getElementById('rich-text-toolbar');
+
   const encodeBase64 = (text) => {
     return btoa(unescape(encodeURIComponent(text)));
   };
@@ -34,8 +39,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const setSaveStatus = (message, isError = false) => {
     if (saveStatus) {
       saveStatus.textContent = message;
-      saveStatus.style.color = isError ? '#b45309' : '#0f766e';
+      saveStatus.style.color = isError ? '#e23b3b' : '#0284c7';
     }
+  };
+
+  const simulateProgress = (start, duration) => {
+    if (!progressBar || !progressContainer) return null;
+    progressContainer.hidden = false;
+    progressBar.style.width = '0%';
+    let startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min((elapsed / duration) * 90, 90); // Cap at 90% until done
+      progressBar.style.width = `${progress}%`;
+    }, 50);
+    return interval;
+  };
+
+  const finishProgress = (interval, success) => {
+    if (!progressBar || !progressContainer) return;
+    clearInterval(interval);
+    progressBar.style.width = '100%';
+    progressBar.style.background = success ? 'linear-gradient(90deg,#10b981,#059669)' : 'linear-gradient(90deg,#ef4444,#dc2626)';
+    setTimeout(() => {
+      progressContainer.hidden = true;
+      progressBar.style.width = '0%';
+      progressBar.style.background = 'linear-gradient(90deg,#0ea5e9,#0284c7)';
+    }, 1500);
   };
 
   const setEditingState = () => {
@@ -45,9 +75,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     const toggleBtn = document.getElementById('toggle-edit-text');
     if (toggleBtn) {
-      toggleBtn.textContent = editingText && ownerMode ? 'Selesai edit narasi' : 'Edit narasi';
+      toggleBtn.textContent = editingText && ownerMode ? 'Selesai Edit Narasi' : '1. Buka Mode Edit Teks';
+      toggleBtn.style.background = editingText && ownerMode ? '#bae6fd' : '';
+    }
+    if (rtToolbar) {
+      rtToolbar.hidden = !(editingText && ownerMode);
     }
   };
+
+  // Rich Text Commands
+  document.querySelectorAll('.rt-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.execCommand(btn.dataset.command, false, null);
+    });
+  });
+  
+  document.getElementById('rt-fontName')?.addEventListener('change', (e) => {
+    document.execCommand('fontName', false, e.target.value);
+  });
+  
+  document.getElementById('rt-fontSize')?.addEventListener('change', (e) => {
+    document.execCommand('fontSize', false, e.target.value);
+  });
+  
+  document.getElementById('rt-foreColor')?.addEventListener('input', (e) => {
+    document.execCommand('foreColor', false, e.target.value);
+  });
+  
+  document.getElementById('rt-hiliteColor')?.addEventListener('input', (e) => {
+    document.execCommand('hiliteColor', false, e.target.value); // Use 'backColor' in some browsers, but 'hiliteColor' is standard for HTML5 text highlight
+  });
 
   const buildDefaultState = () => {
     document.querySelectorAll('.editable-text').forEach((el) => {
@@ -91,6 +149,11 @@ document.addEventListener('DOMContentLoaded', function () {
         img.src = state.images[key];
       }
     });
+
+    const ytIframe = document.getElementById('video-iframe');
+    if (ytIframe && state.texts['youtube']) {
+      ytIframe.src = state.texts['youtube'];
+    }
   };
 
   const persistLocalFallback = () => {
@@ -110,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     setSaveStatus('Menyimpan ke Cloudflare...');
+    const progressInterval = simulateProgress(true, 3000); // simulate 3 sec save
 
     const saveViaCloudflare = async () => {
       const response = await fetch('https://eco-enzim.pages.dev/api/save-content', {
@@ -133,10 +197,12 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const saved = await saveViaCloudflare();
       persistLocalFallback();
+      finishProgress(progressInterval, true);
       setSaveStatus('Tersimpan lewat Cloudflare dan siap dipakai di semua perangkat.');
       return saved;
     } catch (cloudError) {
       persistLocalFallback();
+      finishProgress(progressInterval, false);
       const message = cloudError.message || 'Gagal menyimpan ke Cloudflare';
       setSaveStatus(`Gagal menyimpan: ${message}`, true);
       return false;
@@ -225,9 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!editingText) {
           const saved = await saveContent();
           if (saved) {
-            alert('Perubahan narasi dan gambar sudah disimpan. Segarkan halaman lain untuk melihat perubahan.');
-          } else {
-            alert('Penyimpanan online gagal. Pastikan Cloudflare function `/api/save-content` sudah aktif. Perubahan hanya tersimpan di browser Anda saat ini.');
+            // Optional: alert('Tersimpan!');
           }
         }
       });
@@ -236,11 +300,39 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveBtn = document.getElementById('save-content');
     if (saveBtn) {
       saveBtn.addEventListener('click', async () => {
-        const saved = await saveContent();
-        if (saved) {
-          alert('Perubahan telah disimpan melalui Cloudflare. Segarkan halaman lain untuk melihat update.');
+        await saveContent();
+      });
+    }
+    
+    // YouTube Logic
+    const applyYtBtn = document.getElementById('apply-youtube');
+    const ytInput = document.getElementById('youtube-link-input');
+    if (applyYtBtn && ytInput) {
+      applyYtBtn.addEventListener('click', async () => {
+        let link = ytInput.value.trim();
+        if (!link) return;
+        
+        let videoId = '';
+        if (link.includes('youtu.be/')) {
+          videoId = link.split('youtu.be/')[1].split('?')[0];
+        } else if (link.includes('youtube.com/watch')) {
+          const urlParams = new URLSearchParams(link.split('?')[1]);
+          videoId = urlParams.get('v');
+        }
+        
+        if (videoId) {
+          const embedLink = `https://www.youtube.com/embed/${videoId}`;
+          state.texts['youtube'] = embedLink;
+          const ytIframe = document.getElementById('video-iframe');
+          if (ytIframe) ytIframe.src = embedLink;
+          
+          const saved = await saveContent();
+          if (saved) {
+            ytInput.value = '';
+            ytInput.placeholder = 'Berhasil diterapkan!';
+          }
         } else {
-          alert('Gagal menyimpan melalui Cloudflare. Pastikan function `/api/save-content` sudah diterapkan.');
+          alert('Link YouTube tidak valid. Gunakan format yang benar.');
         }
       });
     }

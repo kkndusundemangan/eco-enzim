@@ -7,9 +7,43 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Eco Enzim Rumahan - Dusun Demangan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css?v=20260709">
 </head>
 <body id="top">
+  <!-- Rich Text Toolbar (Hidden by default) -->
+  <div id="rich-text-toolbar" class="rt-toolbar" hidden>
+    <div class="rt-group">
+      <button class="rt-btn" data-command="bold" title="Bold"><b>B</b></button>
+      <button class="rt-btn" data-command="italic" title="Italic"><i>I</i></button>
+      <button class="rt-btn" data-command="underline" title="Underline"><u>U</u></button>
+    </div>
+    <div class="rt-group">
+      <select class="rt-select" id="rt-fontName" title="Font Family">
+        <option value="Inter, sans-serif">Inter</option>
+        <option value="'Poppins', sans-serif">Poppins</option>
+        <option value="'Roboto', sans-serif">Roboto</option>
+        <option value="'Nunito', sans-serif">Nunito</option>
+      </select>
+      <select class="rt-select" id="rt-fontSize" title="Font Size">
+        <option value="3">Normal</option>
+        <option value="4">Besar</option>
+        <option value="5">Lebih Besar</option>
+        <option value="6">Sangat Besar</option>
+        <option value="7">Raksasa</option>
+      </select>
+      <input type="color" id="rt-foreColor" class="rt-color" title="Warna Teks">
+      <input type="color" id="rt-hiliteColor" class="rt-color" title="Warna Latar Belakang (Highlight)" value="#ffffff">
+    </div>
+    <div class="rt-group">
+      <button class="rt-btn" data-command="justifyLeft" title="Rata Kiri">⫷</button>
+      <button class="rt-btn" data-command="justifyCenter" title="Rata Tengah">☰</button>
+      <button class="rt-btn" data-command="justifyRight" title="Rata Kanan">⫸</button>
+    </div>
+  </div>
+
   <header class="hero">
     <div class="hero-glow"></div>
     <div class="leaf-pattern leaf-left"></div>
@@ -40,25 +74,53 @@
         </div>
       </div>
     </div>
+    <div class="wave-divider wave-bottom">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,115.15,189.7,92.83,235.63,75.46,278.43,64.44,321.39,56.44Z" class="shape-fill"></path>
+      </svg>
+    </div>
   </header>
 
   <main>
     <div id="owner-tools" class="owner-tools" hidden>
       <div class="owner-panel">
-        <h4>Mode admin</h4>
-        <p>Gunakan panel ini untuk mengubah teks dan gambar. Perubahan akan disimpan ke server dan tampil untuk semua pengunjung setelah berhasil tersimpan.</p>
-        <p id="save-status" class="save-status">Status: menunggu sinkronisasi...</p>
-        <div class="owner-actions">
-          <button type="button" id="toggle-edit-text" class="btn secondary light">Edit narasi</button>
-          <button type="button" id="save-content" class="btn primary">Simpan sekarang</button>
-          <button type="button" class="btn secondary light owner-trigger" data-target="logo">Ganti logo</button>
-          <button type="button" class="btn secondary light owner-trigger" data-target="product">Ganti foto produk</button>
-          <button type="button" class="btn secondary light owner-trigger" data-target="gallery1">Ganti galeri 1</button>
-          <button type="button" class="btn secondary light owner-trigger" data-target="gallery2">Ganti galeri 2</button>
-          <button type="button" class="btn secondary light owner-trigger" data-target="gallery3">Ganti galeri 3</button>
-          <a href="admin.html" class="btn secondary light">Halaman admin</a>
-          <button type="button" id="logout-admin" class="btn secondary light">Keluar mode admin</button>
-          <button type="button" id="clear-preview" class="btn secondary light">Reset tampilan</button>
+        <h4>Panel Admin</h4>
+        <p>Gunakan panel ini untuk mengubah teks, gambar, dan video. Setelah selesai, klik tombol <strong>Simpan Perubahan</strong>.</p>
+        
+        <div class="admin-grid">
+          <div class="admin-box">
+            <h5>Teks & Gambar</h5>
+            <div class="owner-actions">
+              <button type="button" id="toggle-edit-text" class="btn secondary light">1. Buka Mode Edit Teks</button>
+              <button type="button" class="btn secondary light owner-trigger" data-target="logo">Ganti Logo Utama</button>
+              <button type="button" class="btn secondary light owner-trigger" data-target="product">Ganti Foto Produk</button>
+              <button type="button" class="btn secondary light owner-trigger" data-target="gallery1">Ganti Galeri 1</button>
+              <button type="button" class="btn secondary light owner-trigger" data-target="gallery2">Ganti Galeri 2</button>
+              <button type="button" class="btn secondary light owner-trigger" data-target="gallery3">Ganti Galeri 3</button>
+            </div>
+          </div>
+          
+          <div class="admin-box">
+            <h5>Video YouTube</h5>
+            <div class="youtube-input-wrap">
+              <input type="text" id="youtube-link-input" placeholder="Tempel link YouTube (contoh: https://youtu.be/dQw4w9WgXcQ)">
+              <button type="button" id="apply-youtube" class="btn secondary light">Terapkan Video</button>
+            </div>
+          </div>
+          
+          <div class="admin-box save-box">
+            <h5>Simpan</h5>
+            <button type="button" id="save-content" class="btn primary">Simpan Semua Perubahan</button>
+            <div class="progress-container" id="save-progress-container" hidden>
+              <div class="progress-bar" id="save-progress-bar"></div>
+            </div>
+            <p id="save-status" class="save-status">Status: Belum ada perubahan disimpan.</p>
+            <div class="owner-actions inline">
+              <a href="admin.html" class="btn secondary light small">Menu Admin</a>
+              <button type="button" id="logout-admin" class="btn secondary light small">Keluar</button>
+              <button type="button" id="clear-preview" class="btn secondary light small">Reset</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

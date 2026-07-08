@@ -5,36 +5,55 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admin Eco Enzim</title>
   <style>
-    body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:linear-gradient(135deg,#031a2e,#083a59);color:#fff;min-height:100vh;display:grid;place-items:center;padding:24px}
-    .card{width:min(460px,100%);background:rgba(255,255,255,.95);color:#0f172a;border-radius:22px;padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
-    h1{margin-top:0;font-size:1.5rem}
-    p{color:#5f6f82;line-height:1.6}
-    input{width:100%;padding:.95rem 1rem;border:1px solid #dcecff;border-radius:999px;outline:none;margin-top:.8rem}
-    button{margin-top:1rem;width:100%;padding:.95rem 1rem;border:0;border-radius:999px;background:#69cfff;color:#04253d;font-weight:700;cursor:pointer}
-    .note{font-size:.95rem;margin-top:.8rem;color:#5f6f82}
-    a{color:#0b5a7c;text-decoration:none;font-weight:600}
+    body{font-family:'Inter',system-ui,Arial,sans-serif;margin:0;background:linear-gradient(135deg,#031a2e,#083a59);color:#fff;min-height:100vh;display:grid;place-items:center;padding:24px}
+    .card{width:min(460px,100%);background:rgba(255,255,255,.95);color:#0f172a;border-radius:24px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+    h1{margin-top:0;font-size:1.8rem;color:#031a2e;text-align:center;margin-bottom:.5rem}
+    p{color:#475569;line-height:1.6;text-align:center;margin-bottom:1.5rem}
+    input{width:100%;padding:1rem 1.2rem;border:2px solid #e2e8f0;border-radius:12px;outline:none;font-size:1rem;transition:border-color .3s ease, box-shadow .3s ease;box-sizing:border-box;}
+    input:focus{border-color:#0284c7;box-shadow:0 0 0 4px rgba(2,132,199,.15)}
+    button{margin-top:1.2rem;width:100%;padding:1rem 1.2rem;border:0;border-radius:12px;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
+    button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,132,199,.3)}
+    .note{font-size:.9rem;margin-top:1rem;color:#64748b;text-align:center}
+    .back-link{display:block;text-align:center;margin-top:1.5rem;color:#0284c7;text-decoration:none;font-weight:600;transition:color .2s ease}
+    .back-link:hover{color:#0369a1}
+    #admin-message{text-align:center;font-weight:600;margin-top:1rem}
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>Halaman Admin</h1>
-    <p>Masuk untuk membuka mode edit narasi dan gambar. Setelah masuk, perubahan akan disimpan dan tampil untuk publik lewat halaman utama.</p>
+    <h1>Mode Admin</h1>
+    <p>Masukkan password untuk membuka akses edit narasi, gambar, dan link YouTube.</p>
     <form id="admin-login-form">
-      <input id="admin-password" type="password" placeholder="Ketik password admin" />
-      <button type="submit">Masuk ke mode admin</button>
+      <input id="admin-password" type="password" placeholder="Ketik password admin" required />
+      <button type="submit">Masuk ke Mode Edit</button>
     </form>
     <p class="note">Password demo: <strong>demangan2026</strong></p>
     <p id="admin-message"></p>
-    <p><a href="index.html">← Kembali ke halaman utama</a></p>
+    <a href="index.html" class="back-link">← Kembali ke Halaman Utama</a>
   </div>
   <script>
+    // Fungsi untuk menghitung SHA-256 hash
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+    }
+
     const form = document.getElementById('admin-login-form');
     const msg = document.getElementById('admin-message');
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', async function (event) {
       event.preventDefault();
       const pass = document.getElementById('admin-password').value;
-      if (pass === 'demangan2026') {
+      const hash = await sha256(pass);
+      
+      // Hash dari "demangan2026"
+      const expectedHash = "f5f4131c8a2ed97e2806046f68da08fa2d0c3be324aafea465ba77517fab770a";
+
+      if (hash === expectedHash) {
         sessionStorage.setItem('ecoEnzimAdmin', 'true');
+        // Menyimpan status login dengan token statis atau hash agar script.js bisa memvalidasi
         window.location.href = 'index.html?owner=demangan2026';
       } else {
         msg.textContent = 'Password salah. Coba lagi.';
