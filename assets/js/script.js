@@ -107,6 +107,27 @@ document.addEventListener('DOMContentLoaded', function () {
     document.execCommand('hiliteColor', false, e.target.value); // Use 'backColor' in some browsers, but 'hiliteColor' is standard for HTML5 text highlight
   });
 
+  // Handle preset color swatches
+  document.querySelectorAll('#rt-text-presets .rt-color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', (e) => {
+      e.preventDefault();
+      const color = swatch.getAttribute('data-color');
+      document.execCommand('foreColor', false, color);
+      const picker = document.getElementById('rt-foreColor');
+      if (picker) picker.value = color;
+    });
+  });
+
+  document.querySelectorAll('#rt-bg-presets .rt-color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', (e) => {
+      e.preventDefault();
+      const color = swatch.getAttribute('data-color');
+      document.execCommand('hiliteColor', false, color === 'transparent' ? 'rgba(0,0,0,0)' : color);
+      const picker = document.getElementById('rt-hiliteColor');
+      if (picker && color !== 'transparent') picker.value = color;
+    });
+  });
+
   const buildDefaultState = () => {
     document.querySelectorAll('.editable-text').forEach((el) => {
       const key = el.getAttribute('data-edit-key');

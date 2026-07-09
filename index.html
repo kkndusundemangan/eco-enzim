@@ -9,7 +9,7 @@
   <title>Eco Enzim Rumahan - Dusun Demangan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;800&family=Roboto:wght@400;700&family=Montserrat:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css?v=20260709">
 </head>
 <body id="top">
@@ -26,6 +26,11 @@
         <option value="'Poppins', sans-serif">Poppins</option>
         <option value="'Roboto', sans-serif">Roboto</option>
         <option value="'Nunito', sans-serif">Nunito</option>
+        <option value="'Montserrat', sans-serif">Montserrat</option>
+        <option value="'Lora', serif">Lora (Serif)</option>
+        <option value="'Oswald', sans-serif">Oswald</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Caveat', cursive">Caveat (Tulis Tangan)</option>
       </select>
       <select class="rt-select" id="rt-fontSize" title="Font Size">
         <option value="3">Normal</option>
@@ -34,8 +39,31 @@
         <option value="6">Sangat Besar</option>
         <option value="7">Raksasa</option>
       </select>
-      <input type="color" id="rt-foreColor" class="rt-color" title="Warna Teks">
-      <input type="color" id="rt-hiliteColor" class="rt-color" title="Warna Latar Belakang (Highlight)" value="#ffffff">
+      
+      <div class="rt-color-container">
+        <span class="rt-label">Teks:</span>
+        <div class="rt-colors-preset" id="rt-text-presets">
+          <button class="rt-color-swatch" data-color="#082454" style="background:#082454" title="Biru Gelap"></button>
+          <button class="rt-color-swatch" data-color="#0284c7" style="background:#0284c7" title="Biru Terang"></button>
+          <button class="rt-color-swatch" data-color="#10b981" style="background:#10b981" title="Hijau"></button>
+          <button class="rt-color-swatch" data-color="#ef4444" style="background:#ef4444" title="Merah"></button>
+          <button class="rt-color-swatch" data-color="#f59e0b" style="background:#f59e0b" title="Kuning"></button>
+          <button class="rt-color-swatch" data-color="#1e293b" style="background:#1e293b" title="Hitam"></button>
+        </div>
+        <input type="color" id="rt-foreColor" class="rt-color" title="Warna Kustom">
+      </div>
+      
+      <div class="rt-color-container">
+        <span class="rt-label">Stabilo:</span>
+        <div class="rt-colors-preset" id="rt-bg-presets">
+          <button class="rt-color-swatch" data-color="transparent" style="background:transparent; border:1px dashed #cbd5e1" title="Tanpa Warna"></button>
+          <button class="rt-color-swatch" data-color="#fef08a" style="background:#fef08a" title="Kuning Stabilo"></button>
+          <button class="rt-color-swatch" data-color="#bbf7d0" style="background:#bbf7d0" title="Hijau Stabilo"></button>
+          <button class="rt-color-swatch" data-color="#bfdbfe" style="background:#bfdbfe" title="Biru Stabilo"></button>
+          <button class="rt-color-swatch" data-color="#fbcfe8" style="background:#fbcfe8" title="Pink Stabilo"></button>
+        </div>
+        <input type="color" id="rt-hiliteColor" class="rt-color" title="Warna Latar Kustom" value="#ffffff">
+      </div>
     </div>
     <div class="rt-group">
       <button class="rt-btn" data-command="justifyLeft" title="Rata Kiri">⫷</button>
