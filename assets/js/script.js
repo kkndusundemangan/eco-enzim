@@ -68,20 +68,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 1500);
   };
 
-  const setEditingState = () => {
-    document.querySelectorAll('.editable-text').forEach((el) => {
-      el.contentEditable = editingText && ownerMode ? 'true' : 'false';
-      el.classList.toggle('is-editing', editingText && ownerMode);
+  const debounce = (fn, delay) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), delay); }; };
+
+  // Auto-save saat teks editable berubah (tidak perlu editingText aktif)
+  const scheduleAutoSave = debounce(() => { if (ownerMode) { saveContent(); } }, 2000);
+
+  // Attach input listeners to all editable-text elements
+  function attachAutoSaveListeners() {
+    document.querySelectorAll('.editable-text[contenteditable="true"]').forEach(el => {
+      el.addEventListener('input', scheduleAutoSave);
     });
-    const toggleBtn = document.getElementById('toggle-edit-text');
-    if (toggleBtn) {
-      toggleBtn.textContent = editingText && ownerMode ? 'Selesai Edit Narasi' : '1. Buka Mode Edit Teks';
-      toggleBtn.style.background = editingText && ownerMode ? '#bae6fd' : '';
-    }
-    if (rtToolbar) {
-      rtToolbar.hidden = !(editingText && ownerMode);
-    }
-  };
+  }
+
+  if (editingText && ownerMode) { attachAutoSaveListeners(); }
 
   // Rich Text Commands
   document.querySelectorAll('.rt-btn').forEach(btn => {
@@ -193,8 +192,12 @@ document.addEventListener('DOMContentLoaded', function () {
       updatedAt: new Date().toISOString()
     };
 
-    setSaveStatus('Menyimpan ke Cloudflare...');
-    const progressInterval = simulateProgress(true, 3000); // simulate 3 sec save
+    // PENTING: Simpan ke localStorage TERLEBIH DAHULU sebelum request jaringan
+    // Ini menjamin data selalu tersimpan meskipun jaringan gagal
+    persistLocalFallback();
+
+    setSaveStatus('Menyimpan...');
+    const progressInterval = simulateProgress(true, 3000);
 
     const saveViaCloudflare = async () => {
       const response = await fetch('https://eco-enzim.pages.dev/api/save-content', {
@@ -211,21 +214,18 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const errorBody = await response.json().catch(() => ({}));
-      const message = errorBody.error || response.statusText || 'Unknown Cloudflare error';
-      throw new Error(`Cloudflare save gagal: ${message}`);
+      const message = errorBody.error || response.statusText || 'Cloudflare error';
+      throw new Error(`Cloudflare gagal: ${message}`);
     };
 
     try {
       const saved = await saveViaCloudflare();
-      persistLocalFallback();
       finishProgress(progressInterval, true);
-      setSaveStatus('Tersimpan lewat Cloudflare dan siap dipakai di semua perangkat.');
+      setSaveStatus('Tersimpan ke Cloudflare ✓');
       return saved;
     } catch (cloudError) {
-      persistLocalFallback();
       finishProgress(progressInterval, false);
-      const message = cloudError.message || 'Gagal menyimpan ke Cloudflare';
-      setSaveStatus(`Gagal menyimpan: ${message}`, true);
+      setSaveStatus('Tersimpan lokal (Cloudflare tidak tersedia)', true);
       return false;
     }
   };
@@ -238,9 +238,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 400);
   };
 
+  // Fungsi untuk membaca semua data dari localStorage
+  const getLocalOverrides = () => {
+    const localTexts = {};
+    const localImages = {};
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('ecoEnzimText:')) {
+        const editKey = key.replace('ecoEnzimText:', '');
+        const val = localStorage.getItem(key);
+        if (val !== null) localTexts[editKey] = val;
+      }
+      if (key.startsWith('ecoEnzimAsset:')) {
+        const imgKey = key.replace('ecoEnzimAsset:', '');
+        const val = localStorage.getItem(key);
+        if (val !== null) localImages[imgKey] = val;
+      }
+    });
+    return { texts: localTexts, images: localImages };
+  };
+
   const loadContent = async () => {
     buildDefaultState();
 
+    // Langkah 1: Coba ambil content.json sebagai data dasar
     const contentUrl = `./data/content.json?ts=${Date.now()}`;
     try {
       const response = await fetch(contentUrl, { cache: 'no-store' });
@@ -251,33 +271,21 @@ document.addEventListener('DOMContentLoaded', function () {
       if (jsonContent && jsonContent.texts) {
         mergeState(jsonContent);
       }
-      setSaveStatus('Konten dimuat dari data/content.json.', false);
+      setSaveStatus('Konten dimuat.', false);
     } catch (loadError) {
-      setSaveStatus('Mode preview lokal aktif: tidak bisa memuat content.json.', true);
-      const legacyTexts = {};
-      const legacyImages = {};
-      document.querySelectorAll('.editable-text').forEach((el) => {
-        const key = el.getAttribute('data-edit-key');
-        if (!key) return;
-        const savedText = localStorage.getItem(`ecoEnzimText:${key}`);
-        if (savedText) {
-          legacyTexts[key] = savedText;
-        }
-      });
-      document.querySelectorAll('.editable-image').forEach((img) => {
-        const key = img.getAttribute('data-image-key');
-        if (!key) return;
-        const savedValue = localStorage.getItem(`ecoEnzimAsset:${key}`);
-        if (savedValue) {
-          legacyImages[key] = savedValue;
-        }
-      });
-      mergeState({ texts: legacyTexts, images: legacyImages });
+      setSaveStatus('Mode preview lokal aktif.', true);
+    }
+
+    // Langkah 2: SELALU terapkan data dari localStorage (menimpa content.json)
+    // Ini yang menjamin perubahan admin tetap muncul setelah reload
+    const localData = getLocalOverrides();
+    if (Object.keys(localData.texts).length > 0 || Object.keys(localData.images).length > 0) {
+      mergeState(localData);
     }
 
     applyStateToDom();
 
-    // Poll content.json periodically so other devices see updates automatically
+    // Polling content.json untuk sinkronisasi antar perangkat
     setInterval(async () => {
       try {
         const pollUrl = `./data/content.json?ts=${Date.now()}`;
@@ -286,12 +294,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const latest = await r.json();
         if (latest && latest.updatedAt && latest.updatedAt !== state.updatedAt) {
           mergeState(latest);
+          // Terapkan ulang localStorage agar tidak tertimpa oleh polling
+          const freshLocal = getLocalOverrides();
+          if (Object.keys(freshLocal.texts).length > 0 || Object.keys(freshLocal.images).length > 0) {
+            mergeState(freshLocal);
+          }
           applyStateToDom();
           state.updatedAt = latest.updatedAt;
           setSaveStatus('Konten diperbarui otomatis.', false);
         }
       } catch (e) {
-        // ignore polling errors
+        // abaikan error polling
       }
     }, 30000);
   };
