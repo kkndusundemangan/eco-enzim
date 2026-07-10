@@ -176,6 +176,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  // Toggle editing UI state: enable/disable contenteditable on editable elements
+  const setEditingState = () => {
+    const toggleBtn = document.getElementById('toggle-edit-text');
+    const editableEls = document.querySelectorAll('.editable-text');
+
+    if (editingText) {
+      // Enable editing
+      editableEls.forEach(el => {
+        el.setAttribute('contenteditable', 'true');
+        el.classList.add('is-editing');
+      });
+      if (rtToolbar) rtToolbar.hidden = false;
+      if (toggleBtn) toggleBtn.textContent = 'Tutup Mode Edit Teks';
+      // Attach auto-save listeners for newly editable elements
+      attachAutoSaveListeners();
+    } else {
+      // Disable editing
+      editableEls.forEach(el => {
+        el.setAttribute('contenteditable', 'false');
+        el.classList.remove('is-editing');
+      });
+      if (rtToolbar) rtToolbar.hidden = true;
+      if (toggleBtn) toggleBtn.textContent = '1. Buka Mode Edit Teks';
+    }
+  };
+
   const persistLocalFallback = () => {
     Object.entries(state.texts).forEach(([key, value]) => {
       localStorage.setItem(`ecoEnzimText:${key}`, value);
