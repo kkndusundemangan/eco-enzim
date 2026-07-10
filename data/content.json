@@ -1,8 +1,8 @@
 {
   "texts": {
-    "heroBadge": "w",
-    "heroHeadline": "Eco Enzim Rumahan: Dari Mojoarum, Untuk Bumi.",
-    "heroSubtext": "Solusi alami dari sisa dapur dan limbah organik yang diolah bersama oleh warga&nbsp; Desa Mojoarum.",
+    "heroBadge": "Mengubah Sampah Jadi Berkah: Gerakan Ekoenzim Desa Mojoarum",
+    "heroHeadline": "Solusi Cerdas Kelola Sampah Organik Rumah Tangga",
+    "heroSubtext": "Tahukah Anda? Setiap hari, rumah tangga kita menghasilkan banyak sampah organik. Di Desa Mojoarum, kami hadir dengan sebuah solusi cerdas untuk mengatasi permasalahan ini melalui program pembuatan Ekoenzim.",
     "heroCtaPrimary": "Dapatkan Gratis",
     "heroCtaSecondary": "Lihat Dokumentasi",
     "stat1Value": "100%",
@@ -11,15 +11,15 @@
     "stat2Label": "Rasio fermentasi",
     "stat3Value": "Gratis",
     "stat3Label": "Untuk warga",
-    "aboutTitle": "<font face=\"Nunito, sans-serif\" color=\"#0e6590\">Eco enzim yang bermanfaat, aman, dan dekat dengan rumah.</font>",
-    "aboutText": "Eco enzim adalah cairan serbaguna yang dihasilkan dari fermentasi sisa sayur, buah, gula (molase), dan air. Produk buatan ibu-ibu Dusun Demangan ini membantu membersihkan rumah, menyuburkan tanaman, dan menjaga lingkungan tetap sehat.",
+    "aboutTitle": "Limbah Rumah Tangga",
+    "aboutText": "<span style=\"font-size: 1.1rem;\">Alih-alih membiarkan sisa makanan menumpuk di tempat\npembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri</span>Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan.",
     "pill1": "Cairan pembersih",
     "pill2": "Pupuk organik",
     "pill3": "Pengusir hama",
-    "aboutNote": "Diproduksi secara gotong royong, aman untuk lingkungan, dan mudah dibuat di skala rumah tangga.",
-    "quoteText": "“Dari dapur rumah, untuk kebersihan lingkungan.”",
-    "compositionTitle": "Dibuat dari 100% Bahan <span class=\"accent\">Alami</span>",
-    "compositionText": "Setiap bahan dipilih dengan tujuan sederhana: memanfaatkan limbah organik menjadi sesuatu yang bermanfaat.",
+    "aboutNote": "Produk ini mudah dibuat, aman, dan dapat disimpan lama bila disimpan dalam wadah tertutup rapat.",
+    "quoteText": "Ekoenzim adalah cairan ajaib yang sangat ekonomis dan ramah lingkungan. Anda bisa memanfaatkannya untuk membersihkan lantai, menjaga kebersihan saluran air, dan mengurangi bau tak sedap.",
+    "compositionTitle": "Manfaat Serbaguna untuk Sehari-hari",
+    "compositionText": "Ekoenzim dapat digunakan untuk membersihkan dan merawat lantai, menjaga kebersihan saluran air, mengurangi bau tidak sedap, serta menjadi alternatif pembersih harian yang bebas bahan kimia berbahaya.",
     "compositionItem1Title": "Gula Merah / Molase",
     "compositionItem1Desc": "Berperan sebagai sumber makanan mikroba dalam fermentasi.",
     "compositionItem2Title": "Sisa Sayur &amp; Kulit Buah",
@@ -33,12 +33,12 @@
     "step2Text": "Proses sederhana dilakukan secara bersama-sama agar hasilnya konsisten dan aman.",
     "step3Title": "Bagikan untuk warga",
     "step3Text": "Produk siap dipakai di rumah, ditanam di pekarangan, atau dibagikan ke tetangga.",
-    "docsTitle": "Proses gotong royong warga Demangan",
+    "docsTitle": "Proses pembuatan Eco Enzim warga Mojoarum",
     "docsText": "Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.",
     "adminHint": "Admin dapat mengubah narasi dan foto melalui panel edit.",
-    "galleryCaption": "Klik foto untuk mengganti dengan foto dokumentasi Anda.",
-    "ctaTitle": "Program Pembagian <span class=\"big-red\">GRATIS</span> untuk Warga!",
-    "ctaText": "Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.",
+    "galleryCaption": "Dokumentasi",
+    "ctaTitle": "Solusi Rumah Bersih <font color=\"#7dd3fc\"><span style=\"font-size: 51.2px;\">Bebas Kimia&nbsp;</span></font>untuk Anda!",
+    "ctaText": "Cairan ajaib serbaguna untuk pupuk tanaman, pembersih lantai, hingga pelancar saluran air. Pesan hari ini sebelum kehabisan!",
     "whatsappText": "Hubungi Pengurus PKK",
     "footerLine1": "© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.",
     "footerLine2": "Mari bersama wujudkan desa bersih, sehat, dan mandiri."
@@ -50,5 +50,5 @@
     "gallery2": "assets/images/galeri-2.jpeg",
     "gallery3": "assets/images/galeri-3.jpg"
   },
-  "updatedAt": "2026-07-10T17:01:29.717Z"
+  "updatedAt": "2026-07-10T17:02:25.967Z"
 }
