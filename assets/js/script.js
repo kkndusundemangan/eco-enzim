@@ -445,6 +445,89 @@ document.addEventListener('DOMContentLoaded', function () {
 
   revealElements.forEach((el) => observer.observe(el));
 
+  const modal = document.getElementById('preview-modal');
+  const previewTextView = document.getElementById('preview-text-view');
+  const previewImageView = document.getElementById('preview-image-view');
+  const previewTitle = document.getElementById('preview-text-title');
+  const previewBody = document.getElementById('preview-text-body');
+  const previewImage = document.getElementById('preview-image');
+  const previewImageCaption = document.getElementById('preview-image-caption');
+  const previewClose = document.getElementById('preview-close');
+  const previewPrev = document.getElementById('preview-prev');
+  const previewNext = document.getElementById('preview-next');
+
+  const imageElements = Array.from(document.querySelectorAll('.editable-image'));
+  let currentImageIndex = 0;
+
+  const openModal = () => {
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  const showTextPreview = (title, body) => {
+    if (!previewTextView || !previewImageView) return;
+    previewTitle.textContent = title || 'Detail teks';
+    previewBody.innerHTML = body || '';
+    previewTextView.classList.remove('hidden');
+    previewImageView.classList.add('hidden');
+    openModal();
+  };
+
+  const showImagePreview = (index) => {
+    if (!previewTextView || !previewImageView || !previewImage) return;
+    const imageEl = imageElements[index];
+    if (!imageEl) return;
+    currentImageIndex = index;
+    previewImage.src = imageEl.src;
+    previewImage.alt = imageEl.alt || 'Preview gambar';
+    previewImageCaption.textContent = imageEl.dataset.caption || imageEl.alt || '';
+    previewTextView.classList.add('hidden');
+    previewImageView.classList.remove('hidden');
+    openModal();
+  };
+
+  previewClose?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (event) => {
+    if (event.target === modal || event.target.classList.contains('preview-backdrop')) {
+      closeModal();
+    }
+  });
+
+  previewPrev?.addEventListener('click', () => {
+    const nextIndex = (currentImageIndex - 1 + imageElements.length) % imageElements.length;
+    showImagePreview(nextIndex);
+  });
+
+  previewNext?.addEventListener('click', () => {
+    const nextIndex = (currentImageIndex + 1) % imageElements.length;
+    showImagePreview(nextIndex);
+  });
+
+  document.querySelectorAll('.editable-text').forEach((el) => {
+    el.addEventListener('click', (event) => {
+      if (editingText) return;
+      const key = el.getAttribute('data-edit-key') || 'Detail teks';
+      const title = key.replace(/([A-Z])/g, ' $1').trim();
+      showTextPreview(title, el.innerHTML);
+    });
+  });
+
+  imageElements.forEach((img, index) => {
+    img.addEventListener('click', () => {
+      if (editingText) return;
+      showImagePreview(index);
+    });
+  });
+
   const waBtn = document.getElementById('whatsapp-btn');
   if (waBtn) {
     waBtn.addEventListener('click', (e) => {

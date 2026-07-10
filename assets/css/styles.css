@@ -17,6 +17,28 @@ html{scroll-behavior:smooth}
 body{font-family:var(--font-main);margin:0;color:#10284d;line-height:1.6;background:#e8effd;}
 img{display:block;max-width:100%}
 
+.preview-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:1rem;pointer-events:none}
+.preview-modal.hidden{display:none}
+.preview-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(2px)}
+.preview-panel{position:relative;width:100%;max-width:980px;max-height:90vh;padding:1.5rem;background:#fff;border-radius:28px;box-shadow:0 35px 80px rgba(0,0,0,.35);overflow:hidden;pointer-events:auto;display:flex;flex-direction:column}
+.preview-close{position:absolute;top:1rem;right:1rem;width:40px;height:40px;border:none;border-radius:50%;background:rgba(14,36,73,.08);color:#10284d;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.preview-close:hover{background:rgba(14,36,73,.16)}
+.preview-view{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1rem;overflow:auto;padding-top:1.5rem}
+.preview-title{margin:0;font-size:1.5rem;color:#10284d;letter-spacing:-0.02em}
+.preview-body{max-width:760px;color:#475569;font-size:1rem;line-height:1.8;text-align:left}
+.preview-image-view{gap:1rem}
+.preview-image-wrap{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.preview-image{max-width:100%;max-height:62vh;object-fit:contain;border-radius:20px;box-shadow:0 25px 60px rgba(14,36,73,.16)}
+.preview-image-caption{margin:0.75rem 0 0;color:#475569;font-size:0.95rem;line-height:1.6}
+.preview-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,255,255,.92);color:#10284d;font-size:1.75rem;cursor:pointer;box-shadow:0 15px 35px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}
+.preview-prev{left:-22px}
+.preview-next{right:-22px}
+
+@media (max-width:900px){
+  .preview-panel{max-width:100%;padding:1rem;border-radius:20px}
+  .preview-nav{width:36px;height:36px;font-size:1.4rem;left:8px;right:8px}
+}
+
 @keyframes float{
   0%, 100%{transform:translateY(0px) rotate(0deg)}
   50%{transform:translateY(-15px) rotate(4deg)}

@@ -243,9 +243,9 @@
         </div>
 
         <div class="gallery reveal">
-          <img class="editable-image" id="gal1" data-image-key="gallery1" src="assets/images/galeri-1.jpg" alt="Galeri 1">
-          <img class="editable-image" id="gal2" data-image-key="gallery2" src="assets/images/galeri-2.jpeg" alt="Galeri 2">
-          <img class="editable-image" id="gal3" data-image-key="gallery3" src="assets/images/galeri-3.jpg" alt="Galeri 3">
+          <img class="editable-image" id="gal1" data-image-key="gallery1" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" src="assets/images/galeri-1.jpg" alt="Galeri 1">
+          <img class="editable-image" id="gal2" data-image-key="gallery2" data-caption="Galeri 2: Hasil akhir dan pemakaian produk" src="assets/images/galeri-2.jpeg" alt="Galeri 2">
+          <img class="editable-image" id="gal3" data-image-key="gallery3" data-caption="Galeri 3: Atmosfer komunitas dan kegiatan bersama" src="assets/images/galeri-3.jpg" alt="Galeri 3">
         </div>
         <p class="caption editable-text" data-edit-key="galleryCaption" contenteditable="false">Klik foto untuk mengganti dengan foto dokumentasi Anda.</p>
       </div>
@@ -268,6 +268,25 @@
     <p class="editable-text" data-edit-key="footerLine1" contenteditable="false">© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.</p>
     <p class="editable-text" data-edit-key="footerLine2" contenteditable="false">Mari bersama wujudkan desa bersih, sehat, dan mandiri.</p>
   </footer>
+
+  <div id="preview-modal" class="preview-modal hidden" aria-hidden="true">
+    <div class="preview-backdrop"></div>
+    <div class="preview-panel" role="dialog" aria-modal="true">
+      <button id="preview-close" class="preview-close" aria-label="Tutup preview">×</button>
+      <div id="preview-text-view" class="preview-view">
+        <h3 id="preview-text-title" class="preview-title"></h3>
+        <div id="preview-text-body" class="preview-body"></div>
+      </div>
+      <div id="preview-image-view" class="preview-view hidden">
+        <button id="preview-prev" class="preview-nav preview-prev" aria-label="Gambar sebelumnya">‹</button>
+        <div class="preview-image-wrap">
+          <img id="preview-image" class="preview-image" src="" alt="Preview gambar">
+          <p id="preview-image-caption" class="preview-image-caption"></p>
+        </div>
+        <button id="preview-next" class="preview-nav preview-next" aria-label="Gambar berikutnya">›</button>
+      </div>
+    </div>
+  </div>
 
   <input type="file" id="img-file-input" accept="image/*" style="display:none">
   <script src="assets/js/script.js?v=20260709"></script>
