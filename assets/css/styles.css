@@ -170,7 +170,8 @@ img{display:block;max-width:100%}
 .editable-image{transition:all .3s ease;cursor:pointer}
 .editable-image.is-editing{outline:4px dashed #38bdf8;outline-offset:4px;box-shadow:0 0 0 8px rgba(56,189,248,.2)}
 
-.editable-text[contenteditable="true"]{outline:2px dashed #0284c7;outline-offset:4px;border-radius:12px;background:#f0f7ff;box-shadow:0 8px 24px rgba(2,132,199,.12);transition:all .2s;min-height:1.5em;padding:8px 12px;display:inline-block;width:100%}
+.editable-text:empty::before { content: attr(data-placeholder); color: var(--muted); opacity: 0.6; font-style: italic; pointer-events: none; }
+
 .editable-text[contenteditable="true"]:focus{outline:2px solid #0284c7;background:#ffffff;box-shadow:0 12px 32px rgba(2,132,199,.2)}
 
 .cta{padding:6rem 1rem;background:linear-gradient(180deg,#f5f9ff,#eef4ff)}
