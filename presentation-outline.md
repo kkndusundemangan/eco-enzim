@@ -1,94 +1,59 @@
-# Alur Presentasi (PowerPoint): Eco Enzim Rumahan
+# Alur Presentasi (PowerPoint): Menjelaskan Website — User & Admin
 
-Petunjuk singkat: setiap slide gunakan teks minimal, visual kuat (foto/ikon), dan catatan pembicara singkat. Waktu total rekomendasi: 8–12 menit.
+Petunjuk singkat: tiap slide singkat (judul + 2–4 poin), fokus pada fitur, alur penggunaan, dan tugas admin. Waktu rekomendasi keseluruhan: 6–8 menit.
 
 1. Slide Judul
-- Judul: Eco Enzim Rumahan — Solusi Cerdas Kelola Sampah Organik
-- Subjudul: Dusun Demangan • Inisiatif Warga Mojoarum
-- Visual: foto hero atau logo besar
-- Catatan pembicara: sapaan singkat + tujuan presentasi (15–20s)
+- Judul: Demo Web — Eco Enzim (Penjelasan Situs)
+- Subjudul: Tujuan: cara pakai untuk User & Admin
+- Visual: logo situs
 
-2. Hook / Masalah Singkat
-- Headline: Sampah organik rumah tangga = masalah sehari-hari
-- 2 bullets: volume sampah / dampak bau & sanitasi
-- Visual: foto tumpukan sampah atau ikon dampak
-- Catatan: beri contoh lokal (10–15s)
+2. Target Pengguna & Peran
+- Headline: Siapa pengguna web?
+- Poin: Pengunjung (mencari info), Admin (mengelola konten)
+- Catatan pembicara: jelaskan singkat perbedaan peran (15s)
 
-3. Apa itu Eco Enzim?
-- Headline: Cairan fermentasi dari bahan organik
-- 3 bullets singkat: bahan utama, proses fermentasi, manfaat umum
-- Visual: diagram botol + bahan
-- Catatan: definisi 20s
+3. Struktur Halaman (navigasi)
+- Headline: Halaman utama & panel admin
+- Poin: `index.html` (tampilan publik), `admin.html` (login admin)
+- Visual: screenshot mini peta situs
 
-4. Mengapa Ini Penting (Dampak)
-- 3 bullets terukur: kurangi sampah, alternatif pembersih, pupuk
-- Visual: ikon lingkungan, rumah, ekonomi rumah tangga
-- Catatan: sebutkan manfaat untuk keluarga & desa (20–30s)
+4. Konten yang Bisa Diedit (User-facing)
+- Headline: Elemen yang dapat diedit di halaman publik
+- Poin singkat: judul hero, subteks, tombol CTA, teks sektion, gambar galeri, footer
+- Catatan: tunjukkan contoh elemen dengan highlight (20s)
 
-5. Komposisi & Rasio
-- Judul: Komposisi sederhana
-- Bullet: Gula merah/molase • Sisa sayur & kulit buah • Air
-- Tampilkan rasio: 1 : 3 : 10 (teks besar)
-- Visual: gambar bahan + overlay rasio
-- Catatan: tekankan bahan lokal mudah didapat (15–20s)
+5. Alur Editing untuk Admin
+- Langkah ringkas: Masuk `admin.html` → klik "Buka Mode Edit Teks" → ubah elemen → simpan
+- Poin: tombol edit, toolbar rich-text, input gambar (preview)
 
-6. Langkah-Langkah Praktis (Ringkas)
-- Slide dibagi jadi 3 kotak/kolom (masing-masing langkah):
-  - Persiapan: pilah bahan, bersihkan
-  - Pencampuran: timbang & campur sesuai rasio
-  - Fermentasi & penyimpanan: tutup rapat, simpan 3–6 minggu
-- Visual: ikon langkah berurutan
-- Catatan: berikan estimasi waktu tiap tahap (30–40s)
+6. Penyimpanan & Sinkronisasi
+- Headline: Di mana perubahan disimpan?
+- Poin: `localStorage` (preview), `data/content.json` sebagai sumber dasar, dan endpoint `functions/api/save-content.js` untuk menyimpan (Cloudflare)
+- Catatan: jelaskan fallback lokal jika jaringan mati (15s)
 
-7. Tips Keamanan & Kualitas
-- 4 bullets: gunakan wadah bersih, hindari bahan berminyak, cek bau, saring jika perlu
-- Visual: ikon peringatan & checklist
-- Catatan: singkat saja (15s)
+7. Fitur Simpan & Reset
+- Poin: tombol "Simpan Semua Perubahan"; progress bar; pesan status
+- Poin: tombol "Reset" menghapus preview lokal dan logout admin
 
-8. Model Program Komunitas
-- Headline: Program Pembagian & Pelatihan
-- Bullet: pelatihan warga, produksi batch komunitas, pembagian gratis
-- Visual: peta/struktur distribusi sederhana
-- Catatan: jelaskan skala kecil → besar (20s)
+8. Upload Gambar & Preview
+- Headline: Cara ganti gambar
+- Poin: pilih file → preview di halaman → disimpan ke `state.images` dan localStorage
 
-9. Cara Bergabung / Call to Action
-- Headline: Mau ikut atau mau mendapat bantuan?
-- Bullet: nomor WhatsApp pengurus, tempat penjemputan, jadwal pelatihan
-- Visual: tombol/QR code WhatsApp
-- Catatan: ajakan langsung (10–15s)
+9. Keamanan & Batasan
+- Poin: Admin mode memakai sessionStorage dan query param demo; jangan simpan rahasia di klien
+- Poin: Sesi demo (password), validasi sederhana, simpan server-side diperlukan untuk produksi
 
-10. Tampilan Media & Galeri
-- Judul: Hasil & Dokumentasi
-- Bullet: 3 foto terbaik (fermentasi, penggunaan, distribusi)
-- Visual: grid foto (besar)
-- Catatan: biarkan gambar bercerita (10–15s)
+10. Alur Troubleshooting Singkat
+- Poin: jika edit tidak muncul: tekan Reset → refresh
+- Poin: cek console untuk error network; gunakan admin login ulang
 
-11. Alat & Sumber Daya
-- Headline: Materi & dukungan
-- Bullet: link panduan singkat (PDF), video tutorial, kontak admin
-- Visual: ikon dokumen + video
-- Catatan: tunjukkan web/admin yang bisa diedit (10s)
+11. Tugas Admin Harian (ringkas)
+- Poin: perbarui teks hero, galeri foto, embed YouTube, simpan, verifikasi di perangkat lain
 
-12. Ringkasan Pesan Utama
-- 3 bullets ringkas: mudah, berguna, berdaya guna komunitas
-- Visual: ikon centang besar
-- Catatan: ulangi CTA (10s)
+12. CTA & Kontak Teknis
+- Poin: kontak pengembang/admin untuk masalah teknis, link repo atau docs internal
 
-13. Tanya Jawab
-- Judul: Q & A
-- Visual: slide kosong dengan kontak di bawah
-- Catatan: buka sesi tanya jawab 2–4 menit
+Catatan presentasi: gunakan screenshot singkat, panah untuk menunjukkan tombol, dan teks minimal pada slide; berikan catatan pembicara 1–2 kalimat untuk tiap slide.
 
-14. Terima Kasih & Kontak
-- Judul: Terima kasih
-- Bullet kecil: kontak pengurus, akun media, link website
-- Visual: logo + credit
-- Catatan: ajak peserta follow-up
+File ini fokus menjelaskan fungsi situs, alur penggunaan bagi user dan admin, serta langkah teknis singkat tanpa membahas detail Eco Enzim itu sendiri.
 
-Catatan presentasi (umum):
-- Gunakan font besar (24–36pt) untuk judul, 18–24pt untuk poin.
-- Maks 5 poin per slide; hindari paragraf panjang.
-- Gunakan visual mendukung (foto asli proyek jika ada).
-- Jika perlu, siapkan 1 slide cadangan untuk demo singkat atau data tambahan.
-
-Selesai — file ini berfungsi sebagai outline slide ringkas dan rinci sesuai permintaan.
