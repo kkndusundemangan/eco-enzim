@@ -139,6 +139,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const key = img.getAttribute('data-image-key');
       if (key) {
         state.images[key] = img.getAttribute('src') || '';
+        // preserve inline caption attribute using the image key to avoid id/key collisions
+        const capKey = `${key}Caption`;
+        if (img.dataset && img.dataset.caption) {
+          state.texts[capKey] = img.dataset.caption;
+        }
       }
     });
   };
@@ -167,6 +172,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const key = img.getAttribute('data-image-key');
       if (key && state.images[key]) {
         img.src = state.images[key];
+      }
+      // apply caption to nearby figcaption if present (use image key)
+      const capEl = document.querySelector(`[data-edit-key="${key}Caption"]`);
+      if (capEl && state.texts[`${key}Caption`]) {
+        capEl.innerHTML = state.texts[`${key}Caption`];
       }
     });
 
@@ -411,6 +421,15 @@ document.addEventListener('DOMContentLoaded', function () {
         targetElement.src = dataUrl;
         targetElement.dataset.previewName = safeName;
         targetElement.setAttribute('title', `Preview: ${safeName}`);
+        // clear any mismatch where file name might leak into caption dataset
+        if (targetElement.dataset && targetElement.dataset.caption && targetElement.dataset.caption.includes('placeholder')) {
+          // keep original caption in state instead of overwriting with placeholder
+          const capKey = targetElement.id ? `${targetElement.id}Caption` : `${currentTarget}Caption`;
+          if (state.texts[capKey]) {
+            const capEl = document.querySelector(`[data-edit-key="${capKey}"]`);
+            if (capEl) capEl.innerHTML = state.texts[capKey];
+          }
+        }
       }
       state.images[currentTarget] = dataUrl;
       persistLocalFallback();
@@ -473,10 +492,27 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   };
 
-  const showTextPreview = (title, body) => {
+  const showTextPreview = (title, body, popupKey = '') => {
     if (!previewTextView || !previewImageView) return;
     previewTitle.textContent = title || 'Detail teks';
     previewBody.innerHTML = body || '';
+    previewBody.removeAttribute('contenteditable');
+    previewBody.classList.remove('is-editing');
+    previewBody.oninput = null;
+    previewBody.onblur = null;
+
+    // If owner/editor mode is active, make the modal body editable so admin can modify popup content directly
+    if (ownerMode && editingText) {
+      previewBody.setAttribute('contenteditable', 'true');
+      previewBody.classList.add('is-editing');
+      previewBody.oninput = scheduleAutoSave;
+      previewBody.onblur = () => {
+        if (popupKey) {
+          state.texts[popupKey] = previewBody.innerHTML;
+          saveContent();
+        }
+      };
+    }
     previewTextView.classList.remove('hidden');
     previewImageView.classList.add('hidden');
     openModal();
@@ -489,7 +525,10 @@ document.addEventListener('DOMContentLoaded', function () {
     currentImageIndex = index;
     previewImage.src = imageEl.src;
     previewImage.alt = imageEl.alt || 'Preview gambar';
-    previewImageCaption.textContent = imageEl.dataset.caption || imageEl.alt || '';
+    const imageKey = imageEl.getAttribute('data-image-key');
+    const captionKey = imageKey ? `${imageKey}Caption` : '';
+    const captionEl = captionKey ? document.querySelector(`[data-edit-key="${captionKey}"]`) : null;
+    previewImageCaption.textContent = captionEl ? captionEl.innerHTML : imageEl.dataset.caption || imageEl.alt || '';
     previewTextView.classList.add('hidden');
     previewImageView.classList.remove('hidden');
     openModal();
@@ -514,10 +553,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('.editable-text').forEach((el) => {
     el.addEventListener('click', (event) => {
+      // don't open preview when clicking while in edit mode
       if (editingText) return;
+
+      // If element is an anchor (like hero CTA or whatsapp button), avoid opening modal
+      if (el.tagName.toLowerCase() === 'a' || el.closest('a')) return;
+
+      const popupKey = el.getAttribute('data-popup-key');
       const key = el.getAttribute('data-edit-key') || 'Detail teks';
       const title = key.replace(/([A-Z])/g, ' $1').trim();
-      showTextPreview(title, el.innerHTML);
+      const popupContent = popupKey && state.texts[popupKey] ? state.texts[popupKey] : el.innerHTML;
+      showTextPreview(title, popupContent, popupKey);
     });
   });
 

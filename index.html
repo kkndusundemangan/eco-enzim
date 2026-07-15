@@ -188,17 +188,17 @@
         <div class="grid three reveal">
           <div class="card hover-lift">
             <div class="icon">🍯</div>
-              <h3 class="editable-text" data-edit-key="compositionItem1Title" contenteditable="false">Gula Merah / Molase</h3>
+              <h3 class="editable-text" data-edit-key="compositionItem1Title" data-popup-key="compositionItem1Popup" contenteditable="false">Gula Merah / Molase</h3>
               <p class="editable-text" data-edit-key="compositionItem1Desc" contenteditable="false">Berperan sebagai sumber makanan mikroba dalam fermentasi.</p>
           </div>
           <div class="card hover-lift">
             <div class="icon">🥬</div>
-              <h3 class="editable-text" data-edit-key="compositionItem2Title" contenteditable="false">Sisa Sayur & Kulit Buah</h3>
+              <h3 class="editable-text" data-edit-key="compositionItem2Title" data-popup-key="compositionItem2Popup" contenteditable="false">Sisa Sayur & Kulit Buah</h3>
               <p class="editable-text" data-edit-key="compositionItem2Desc" contenteditable="false">Bahan organik yang difermentasi untuk menghasilkan enzim.</p>
           </div>
           <div class="card hover-lift">
             <div class="icon">💧</div>
-              <h3 class="editable-text" data-edit-key="compositionItem3Title" contenteditable="false">Air Bersih</h3>
+              <h3 class="editable-text" data-edit-key="compositionItem3Title" data-popup-key="compositionItem3Popup" contenteditable="false">Air Bersih</h3>
               <p class="editable-text" data-edit-key="compositionItem3Desc" contenteditable="false">Pelarut alami yang memfasilitasi proses fermentasi.</p>
           </div>
         </div>
@@ -211,17 +211,17 @@
         <div class="steps-grid">
           <div class="step-card reveal">
             <span class="step-number">01</span>
-            <h3 class="editable-text" data-edit-key="step1Title" contenteditable="false">Kumpulkan sisa dapur</h3>
+            <h3 class="editable-text" data-edit-key="step1Title" data-popup-key="step1Popup" contenteditable="false">Kumpulkan sisa dapur</h3>
             <p class="editable-text" data-edit-key="step1Text" contenteditable="false">Sayur, kulit buah, dan sisa organik dipilah untuk dijadikan bahan utama.</p>
           </div>
           <div class="step-card reveal">
             <span class="step-number">02</span>
-            <h3 class="editable-text" data-edit-key="step2Title" contenteditable="false">Campur dan fermentasi</h3>
+            <h3 class="editable-text" data-edit-key="step2Title" data-popup-key="step2Popup" contenteditable="false">Campur dan fermentasi</h3>
             <p class="editable-text" data-edit-key="step2Text" contenteditable="false">Proses sederhana dilakukan secara bersama-sama agar hasilnya konsisten dan aman.</p>
           </div>
           <div class="step-card reveal">
             <span class="step-number">03</span>
-            <h3 class="editable-text" data-edit-key="step3Title" contenteditable="false">Bagikan untuk warga</h3>
+            <h3 class="editable-text" data-edit-key="step3Title" data-popup-key="step3Popup" contenteditable="false">Bagikan untuk warga</h3>
             <p class="editable-text" data-edit-key="step3Text" contenteditable="false">Produk siap dipakai di rumah, ditanam di pekarangan, atau dibagikan ke tetangga.</p>
           </div>
         </div>
@@ -243,9 +243,18 @@
         </div>
 
         <div class="gallery reveal">
-          <img class="editable-image" id="gal1" data-image-key="gallery1" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" src="assets/images/galeri-1.jpg" alt="Galeri 1">
-          <img class="editable-image" id="gal2" data-image-key="gallery2" data-caption="Galeri 2: Hasil akhir dan pemakaian produk" src="assets/images/galeri-2.jpeg" alt="Galeri 2">
-          <img class="editable-image" id="gal3" data-image-key="gallery3" data-caption="Galeri 3: Atmosfer komunitas dan kegiatan bersama" src="assets/images/galeri-3.jpg" alt="Galeri 3">
+          <figure class="gallery-item">
+            <img class="editable-image" id="gal1" data-image-key="gallery1" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" src="assets/images/galeri-1.jpg" alt="Galeri 1">
+            <figcaption class="image-caption editable-text" data-edit-key="gallery1Caption" contenteditable="false">Galeri 1: Proses pembuatan dan dokumentasi lapangan</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img class="editable-image" id="gal2" data-image-key="gallery2" data-caption="Galeri 2: Hasil akhir dan pemakaian produk" src="assets/images/galeri-2.jpeg" alt="Galeri 2">
+            <figcaption class="image-caption editable-text" data-edit-key="gallery2Caption" contenteditable="false">Galeri 2: Hasil akhir dan pemakaian produk</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img class="editable-image" id="gal3" data-image-key="gallery3" data-caption="Galeri 3: Atmosfer komunitas dan kegiatan bersama" src="assets/images/galeri-3.jpg" alt="Galeri 3">
+            <figcaption class="image-caption editable-text" data-edit-key="gallery3Caption" contenteditable="false">Galeri 3: Atmosfer komunitas dan kegiatan bersama</figcaption>
+          </figure>
         </div>
         <p class="caption editable-text" data-edit-key="galleryCaption" contenteditable="false">Klik foto untuk mengganti dengan foto dokumentasi Anda.</p>
       </div>
@@ -253,7 +262,7 @@
 
     <section id="cta" class="section cta">
       <div class="cta-box reveal">
-        <div class="eyebrow accent">Program khusus</div>
+        <div class="eyebrow accent editable-text" data-edit-key="ctaEyebrow" contenteditable="false">Program khusus</div>
         <h2 class="editable-text" data-edit-key="ctaTitle" contenteditable="false">Program Pembagian <span class="big-red">GRATIS</span> untuk Warga!</h2>
         <p class="editable-text" data-edit-key="ctaText" contenteditable="false">Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.</p>
         <div class="cta-actions">
