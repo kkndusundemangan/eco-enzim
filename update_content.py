@@ -1,0 +1,53 @@
+import json
+
+path = 'e:/ammar/KKN/eco-enzim/data/content.json'
+with open(path, 'r', encoding='utf-8') as f:
+    data = json.load(f)
+
+texts = data['texts']
+texts['heroSubtext'] = 'Tahukah Anda? Setiap hari, rumah tangga kita menghasilkan banyak sampah organik. Daripada membiarkannya berakhir di tempat pembuangan, warga Desa Mojoarum hadir dengan sebuah solusi cerdas untuk mengatasi permasalahan ini melalui program pembuatan Ekoenzim. Mari bergabung dalam gerakan inovatif yang menyulap sisa dapur menjadi cairan serbaguna penyelamat bumi!'
+texts['stat2Value'] = 'Homemade'
+texts['stat2Label'] = 'Produk Rumahan'
+texts['stat3Value'] = 'Eco Friendly'
+texts['stat3Label'] = 'Ramah Lingkungan'
+texts['aboutTitle'] = 'Menyulap Sisa Makanan Menjadi Cairan "Ajaib" yang Kaya Manfaat'
+texts['aboutText'] = 'Pernahkah terbayangkan bahwa sisa kulit buah dan potongan sayur yang biasanya dibuang kini bisa menjadi produk yang sangat berharga? Alih-alih membiarkan sisa makanan menumpuk di tempat pembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri.<br><br>Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan. Ekoenzim adalah wujud nyata kepedulian kita terhadap alam, yang manfaatnya langsung bisa kita rasakan setiap hari.'
+texts['compositionTitle'] = '✨ Keajaiban dari Tiga Bahan Alami'
+texts['compositionText'] = 'Untuk menciptakan rumah yang bersih dan asri, Anda tidak selalu harus bergantung pada produk pabrik. Ekoenzim dapat digunakan untuk membersihkan dan merawat lantai, menjaga kebersihan saluran air, mengurangi bau tidak sedap, serta menjadi alternatif pembersih harian yang bebas bahan kimia berbahaya. Apa rahasia di baliknya? Semua ini bermula dari perpaduan sederhana namun mematikan bagi kuman:'
+texts['compositionItem1Title'] = 'Gula Merah / Molase'
+texts['compositionItem1Desc'] = 'Berperan sebagai sumber makanan mikroba dalam fermentasi. Bahan inilah yang mengawali proses keajaiban biologi di dalam wadah fermentasi Anda.'
+texts['compositionItem2Title'] = 'Sisa Sayur & Kulit Buah'
+texts['compositionItem2Desc'] = 'Bahan organik yang difermentasi untuk menghasilkan enzim. <em>Tips: Penggunaan kulit jeruk, lemon, atau nanas dapat memberikan ekstra aroma segar pada hasil akhir ekoenzim Anda!</em>'
+texts['compositionItem3Title'] = 'Air Bersih'
+texts['compositionItem3Desc'] = 'Pelarut alami yang memfasilitasi proses fermentasi, menyatukan seluruh bahan hingga bereaksi dan matang dengan sempurna.'
+texts['compositionRatio'] = 'Rasio umum pembuatan: <strong>1 : 3 : 10</strong> (molase : bahan organik : air). Cukup ikuti takaran ini, dan alam akan melakukan sisanya!'
+texts['usageTitle'] = 'Satu Cairan, Berjuta Solusi untuk Hunian Anda'
+texts['usageDesc'] = 'Mengurangi paparan bahan kimia di rumah bukan lagi sekadar impian. Dengan sebotol Ekoenzim, Anda memiliki "senjata" alami yang serbaguna untuk berbagai aktivitas rumah tangga:'
+texts['usagePoint1Title'] = 'Mengepel dan Merawat Lantai:'
+texts['usagePoint1Desc'] = 'Jadikan ekoenzim sebagai andalan cairan pembersih harian Anda. Produk ini sangat ideal untuk membersihkan dan merawat lantai agar kesat, mengkilap, dan tentunya lebih aman bagi anak-anak yang bermain di lantai.'
+texts['usagePoint2Title'] = 'Pembersihan Saluran Air dan WC:'
+texts['usagePoint2Desc'] = 'Jangan tunggu sampai mampet! Tuangkan cairan "ajaib" ini secara rutin untuk melarutkan lemak dan kotoran, sekaligus menjaga kebersihan saluran air di rumah Anda.'
+texts['usagePoint3Title'] = 'Penghilang Bau Tidak Sedap:'
+texts['usagePoint3Desc'] = 'Ekoenzim memiliki sifat penetralisir yang luar biasa. Semprotkan atau tuangkan sedikit cairan ini untuk mengurangi bau tak sedap di area tempat sampah, sudut dapur, hingga kamar mandi.'
+texts['usagePoint4Title'] = 'Penyubur Tanaman:'
+texts['usagePoint4Desc'] = 'Ekoenzim bukan hanya pahlawan di dalam rumah, tapi juga di kebun! Cairan ini bisa dimanfaatkan sebagai pupuk organik cair untuk menyuburkan tanah dan dedaunan di pekarangan Anda.'
+texts['usagePoint5Title'] = 'Pengusir Hama Alami:'
+texts['usagePoint5Desc'] = 'Ciptakan tameng pelindung bagi tanaman kesayangan Anda. Semprotkan secara merata karena cairan ini sangat efektif sebagai pengusir hama alami tanpa merusak ekosistem sekitarnya.'
+texts['step1Title'] = 'Kumpulkan sisa dapur'
+texts['step1Text'] = 'Mulailah dari dapur Anda sendiri. Sayur, kulit buah, dan sisa organik dipilah untuk dijadikan bahan utama. Pastikan sisa organik dalam kondisi segar (bukan busuk) agar menghasilkan enzim berkualitas.'
+texts['step2Title'] = 'Campur dan fermentasi'
+texts['step2Text'] = 'Semua bahan dicampur sesuai rasio. Proses sederhana dilakukan secara bersama-sama agar hasilnya konsisten dan aman. Kesabaran adalah kuncinya, biarkan wadah tertutup rapat selama beberapa bulan hingga enzim terbentuk sempurna.'
+texts['step3Title'] = 'Bagikan untuk warga'
+texts['step3Text'] = 'Kebahagiaan sejati adalah saat kita bisa menebar manfaat. Produk siap dipakai di rumah, ditanam di pekarangan, atau dibagikan ke tetangga.'
+texts['docsTitle'] = 'Proses gotong royong warga Demangan'
+texts['docsText'] = 'Kekompakan warga adalah kunci suksesnya gerakan lingkungan ini. Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.'
+texts['ctaEyebrow'] = 'Program E-Commerce'
+texts['ctaTitle'] = 'Mulai <span class="big-red">HIDUP BERSIH!</span>'
+texts['ctaText'] = 'Mari wujudkan lingkungan yang lebih sehat dimulai dari rumah tangga kita. Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.'
+texts['whatsappText'] = 'Kunjungi Toko'
+texts['stepsEyebrow'] = 'Cara Pembuatan'
+texts['stepsTitle'] = 'Tiga Langkah Mudah dalam Semangat Gotong Royong'
+texts['stepsDesc'] = 'Membuat Ekoenzim adalah aktivitas yang menyenangkan, apalagi jika dikerjakan bersama-sama. Berikut adalah tahapan mudah yang kami lakukan di Dusun Demangan:'
+
+with open(path, 'w', encoding='utf-8') as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
