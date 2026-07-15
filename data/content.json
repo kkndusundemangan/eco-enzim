@@ -10,7 +10,7 @@
     "stat2Value": "Homemade",
     "stat2Label": "Produk Rumahan",
     "stat3Value": "Gratis",
-    "stat3Label": "Ramah Lingku",
+    "stat3Label": "",
     "aboutTitle": "Alih-alih membiarkan sisa makanan menumpuk di tempat pembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri.",
     "aboutText": "Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan.",
     "pill1": "Cairan pembersih",
@@ -50,5 +50,5 @@
     "gallery2": "assets/images/galeri-2.jpeg",
     "gallery3": "assets/images/galeri-3.jpg"
   },
-  "updatedAt": "2026-07-15T04:51:55.040Z"
+  "updatedAt": "2026-07-15T04:51:56.823Z"
 }
