@@ -222,3 +222,5 @@ img{display:block;max-width:100%}
   .brand-logo{width:120px;height:120px}
   .rt-toolbar{flex-wrap:wrap;width:90%;justify-content:center}
 }
+
+.hidden { display: none !important; }

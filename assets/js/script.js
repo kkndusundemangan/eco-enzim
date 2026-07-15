@@ -494,8 +494,16 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const hidePreviewViews = () => {
-    if (previewTextView) previewTextView.classList.add('hidden');
-    if (previewImageView) previewImageView.classList.add('hidden');
+    if (previewTextView) {
+      previewTextView.classList.add('hidden');
+      previewTextView.hidden = true;
+      previewTextView.style.display = 'none';
+    }
+    if (previewImageView) {
+      previewImageView.classList.add('hidden');
+      previewImageView.hidden = true;
+      previewImageView.style.display = 'none';
+    }
   };
 
   const showTextPreview = (title, body, popupKey = '') => {
@@ -521,7 +529,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     previewTextView.classList.remove('hidden');
+    previewTextView.hidden = false;
+    previewTextView.style.display = 'flex';
     previewImageView.classList.add('hidden');
+    previewImageView.hidden = true;
+    previewImageView.style.display = 'none';
     openModal();
   };
 
@@ -538,7 +550,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const captionEl = captionKey ? document.querySelector(`[data-edit-key="${captionKey}"]`) : null;
     previewImageCaption.textContent = captionEl ? captionEl.innerHTML : imageEl.dataset.caption || imageEl.alt || '';
     previewTextView.classList.add('hidden');
+    previewTextView.hidden = true;
+    previewTextView.style.display = 'none';
     previewImageView.classList.remove('hidden');
+    previewImageView.hidden = false;
+    previewImageView.style.display = 'flex';
     openModal();
   };
 
@@ -561,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   stepPopupElements.forEach((el) => {
     el.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (editingText) return;
       const popupKey = el.getAttribute('data-popup-key');
       if (!popupKey) return;
@@ -574,7 +591,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   galleryImageElements.forEach((img, index) => {
-    img.addEventListener('click', () => {
+    img.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (editingText) return;
       showImagePreview(index);
     });
