@@ -224,3 +224,9 @@ img{display:block;max-width:100%}
 }
 
 .hidden { display: none !important; }
+
+.usage-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+.usage-list li { display: flex; align-items: flex-start; gap: 1.2rem; background: #fff; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(14,36,73,.05); transition: transform 0.3s; }
+.usage-list li:hover { transform: translateX(10px); }
+.usage-list .icon { font-size: 2rem; background: #f0f9ff; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px; flex-shrink: 0; }
+.usage-list strong { display: block; margin-bottom: 0.4rem; color: var(--primary-blue); font-size: 1.1rem; }
