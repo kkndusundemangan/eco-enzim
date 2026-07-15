@@ -551,18 +551,14 @@ document.addEventListener('DOMContentLoaded', function () {
     showImagePreview(nextIndex);
   });
 
-  document.querySelectorAll('.editable-text').forEach((el) => {
+  document.querySelectorAll('[data-popup-key]').forEach((el) => {
     el.addEventListener('click', (event) => {
-      // don't open preview when clicking while in edit mode
       if (editingText) return;
-
-      // If element is an anchor (like hero CTA or whatsapp button), avoid opening modal
-      if (el.tagName.toLowerCase() === 'a' || el.closest('a')) return;
-
       const popupKey = el.getAttribute('data-popup-key');
-      const key = el.getAttribute('data-edit-key') || 'Detail teks';
+      if (!popupKey) return;
+      const key = el.querySelector('[data-edit-key]')?.getAttribute('data-edit-key') || el.getAttribute('data-edit-key') || 'Detail teks';
       const title = key.replace(/([A-Z])/g, ' $1').trim();
-      const popupContent = popupKey && state.texts[popupKey] ? state.texts[popupKey] : el.innerHTML;
+      const popupContent = state.texts[popupKey] || el.innerHTML;
       showTextPreview(title, popupContent, popupKey);
     });
   });
