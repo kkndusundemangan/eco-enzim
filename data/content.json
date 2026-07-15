@@ -1,4 +1,4 @@
-﻿{
+{
   "texts": {
     "heroBadge": "Mengubah Sampah Jadi Berkah: Gerakan Ekoenzim Desa Mojoarum",
     "heroHeadline": "Solusi Cerdas Kelola Sampah Organik Rumah Tangga",
@@ -7,10 +7,10 @@
     "heroCtaSecondary": "Lihat Dokumentasi",
     "stat1Value": "100%",
     "stat1Label": "Bahan alami",
-    "stat2Value": "Homemade",
-    "stat2Label": "Produk Rumahan",
-    "stat3Value": "Eco Friendly",
-    "stat3Label": "Ramah Lingkungan",
+    "stat2Value": "1:3:10",
+    "stat2Label": "Rasio fermentasi",
+    "stat3Value": "Gratis",
+    "stat3Label": "Untuk warga",
     "aboutTitle": "Alih-alih membiarkan sisa makanan menumpuk di tempat pembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri.",
     "aboutText": "Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan.",
     "pill1": "Cairan pembersih",
@@ -18,7 +18,7 @@
     "pill3": "Pengusir hama",
     "aboutNote": "Produk ini mudah dibuat, aman, dan dapat disimpan lama bila disimpan dalam wadah tertutup rapat.",
     "quoteText": "\"Ekoenzim adalah cairan \\\"ajaib\\\" yang sangat ekonomis dan ramah lingkungan. Anda bisa memanfaatkannya untuk membersihkan lantai, menjaga kebersihan saluran air, dan mengurangi bau tak sedap.\"\n",
-    "compositionTitle": "âœ¨ Manfaat Serbaguna untuk Sehari-hari",
+    "compositionTitle": "✨ Manfaat Serbaguna untuk Sehari-hari",
     "compositionText": "Ekoenzim dapat digunakan untuk membersihkan dan merawat lantai, menjaga kebersihan saluran air, mengurangi bau tidak sedap, serta menjadi alternatif pembersih harian yang bebas bahan kimia berbahaya.",
     "compositionItem1Title": "Gula Merah / Molase",
     "compositionItem1Desc": "Berperan sebagai sumber makanan mikroba dalam fermentasi.",
@@ -44,7 +44,7 @@
     "ctaTitle": "Program Pembagian <span class=\"big-red\">GRATIS</span> untuk Warga!",
     "ctaText": "Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.",
     "whatsappText": "Hubungi Pengurus PKK",
-    "footerLine1": "Â© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.",
+    "footerLine1": "© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.",
     "footerLine2": "Mari bersama wujudkan desa bersih, sehat, dan mandiri.",
     "step1Popup": "Kumpulkan sisa dapur yang bersih dari minyak dan bahan non-organik. Sayur, kulit buah, dan daun kering cocok untuk fermentasi.",
     "step2Popup": "Campur semua bahan organik dengan gula merah dan air bersih dalam wadah tertutup. Aduk perlahan, lalu biarkan fermentasi selama 2-4 minggu.",
@@ -57,5 +57,5 @@
     "gallery2": "assets/images/galeri-2.jpeg",
     "gallery3": "assets/images/galeri-3.jpg"
   },
-  "updatedAt": "2026-07-15T07:35:23.458Z"
+  "updatedAt": "2026-07-15T08:48:04.566Z"
 }
