@@ -564,9 +564,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (editingText) return;
       const popupKey = el.getAttribute('data-popup-key');
       if (!popupKey) return;
-      const titleKey = el.querySelector('[data-edit-key]')?.getAttribute('data-edit-key') || el.getAttribute('data-edit-key');
-      const title = titleKey ? titleKey.replace(/([A-Z])/g, ' $1').trim() : 'Detail langkah';
-      const popupContent = state.texts[popupKey] || el.innerHTML;
+      const titleEl = el.querySelector('[data-edit-key]');
+      const titleKey = titleEl?.getAttribute('data-edit-key') || el.getAttribute('data-edit-key');
+      const titleText = titleEl?.textContent?.trim();
+      const title = titleText || (titleKey ? titleKey.replace(/([A-Z])/g, ' $1').trim() : 'Detail langkah');
+      const popupContent = state.texts[popupKey] || '';
       showTextPreview(title, popupContent, popupKey);
     });
   });
