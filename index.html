@@ -1,360 +1,345 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Eco Enzim Rumahan - Dusun Demangan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Nunito:wght@400;700;900&family=Poppins:wght@400;600;800&family=Roboto:wght@400;700&family=Montserrat:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260709">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="no-store, no-cache, must-revalidate, proxy-revalidate" http-equiv="Cache-Control"/>
+<meta content="no-cache" http-equiv="Pragma"/>
+<meta content="0" http-equiv="Expires"/>
+<title>Eco Enzim Rumahan - Dusun Demangan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=Nunito:wght@400;700;900&amp;family=Poppins:wght@400;600;800&amp;family=Roboto:wght@400;700&amp;family=Montserrat:wght@400;700;900&amp;family=Lora:ital,wght@0,400;0,700;1,400&amp;family=Oswald:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Caveat:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="assets/css/styles.css?v=20260709" rel="stylesheet"/>
 </head>
 <body id="top">
-  <!-- Rich Text Toolbar (Hidden by default) -->
-  <div id="rich-text-toolbar" class="rt-toolbar" hidden>
-    <div class="rt-group">
-      <button class="rt-btn" data-command="bold" title="Bold"><b>B</b></button>
-      <button class="rt-btn" data-command="italic" title="Italic"><i>I</i></button>
-      <button class="rt-btn" data-command="underline" title="Underline"><u>U</u></button>
-    </div>
-    <div class="rt-group">
-      <select class="rt-select" id="rt-fontName" title="Font Family">
-        <option value="Inter, sans-serif">Inter</option>
-        <option value="'Poppins', sans-serif">Poppins</option>
-        <option value="'Roboto', sans-serif">Roboto</option>
-        <option value="'Nunito', sans-serif">Nunito</option>
-        <option value="'Montserrat', sans-serif">Montserrat</option>
-        <option value="'Lora', serif">Lora (Serif)</option>
-        <option value="'Oswald', sans-serif">Oswald</option>
-        <option value="'Playfair Display', serif">Playfair Display</option>
-        <option value="'Caveat', cursive">Caveat (Tulis Tangan)</option>
-      </select>
-      <select class="rt-select" id="rt-fontSize" title="Font Size">
-        <option value="3">Normal</option>
-        <option value="4">Besar</option>
-        <option value="5">Lebih Besar</option>
-        <option value="6">Sangat Besar</option>
-        <option value="7">Raksasa</option>
-      </select>
-      
-      <div class="rt-color-container">
-        <span class="rt-label">Teks:</span>
-        <div class="rt-colors-preset" id="rt-text-presets">
-          <button class="rt-color-swatch" data-color="#082454" style="background:#082454" title="Biru Gelap"></button>
-          <button class="rt-color-swatch" data-color="#0284c7" style="background:#0284c7" title="Biru Terang"></button>
-          <button class="rt-color-swatch" data-color="#10b981" style="background:#10b981" title="Hijau"></button>
-          <button class="rt-color-swatch" data-color="#ef4444" style="background:#ef4444" title="Merah"></button>
-          <button class="rt-color-swatch" data-color="#f59e0b" style="background:#f59e0b" title="Kuning"></button>
-          <button class="rt-color-swatch" data-color="#1e293b" style="background:#1e293b" title="Hitam"></button>
-        </div>
-        <input type="color" id="rt-foreColor" class="rt-color" title="Warna Kustom">
-      </div>
-      
-      <div class="rt-color-container">
-        <span class="rt-label">Stabilo:</span>
-        <div class="rt-colors-preset" id="rt-bg-presets">
-          <button class="rt-color-swatch" data-color="transparent" style="background:transparent; border:1px dashed #cbd5e1" title="Tanpa Warna"></button>
-          <button class="rt-color-swatch" data-color="#fef08a" style="background:#fef08a" title="Kuning Stabilo"></button>
-          <button class="rt-color-swatch" data-color="#bbf7d0" style="background:#bbf7d0" title="Hijau Stabilo"></button>
-          <button class="rt-color-swatch" data-color="#bfdbfe" style="background:#bfdbfe" title="Biru Stabilo"></button>
-          <button class="rt-color-swatch" data-color="#fbcfe8" style="background:#fbcfe8" title="Pink Stabilo"></button>
-        </div>
-        <input type="color" id="rt-hiliteColor" class="rt-color" title="Warna Latar Kustom" value="#ffffff">
-      </div>
-    </div>
-    <div class="rt-group">
-      <button class="rt-btn" data-command="justifyLeft" title="Rata Kiri">⫷</button>
-      <button class="rt-btn" data-command="justifyCenter" title="Rata Tengah">☰</button>
-      <button class="rt-btn" data-command="justifyRight" title="Rata Kanan">⫸</button>
-    </div>
-  </div>
-
-  <header class="hero">
-    <div class="hero-glow"></div>
-    <div class="leaf-pattern leaf-left"></div>
-    <div class="leaf-pattern leaf-right"></div>
-    <div class="hero-inner">
-      <div class="brand-block">
-        <img id="hero-logo" class="brand-logo editable-image" data-image-key="logo" src="assets/images/Logo.png" alt="Logo Eco Enzim Dusun Demangan">
-      </div>
-      <div class="hero-badge editable-text" data-edit-key="heroBadge" contenteditable="false">Mengubah Sampah Jadi Berkah: Gerakan Ekoenzim Desa Mojoarum</div>
-      <h1 class="headline editable-text" data-edit-key="heroHeadline" contenteditable="false">Solusi Cerdas Kelola Sampah Organik Rumah Tangga</h1>
-      <p class="subtext editable-text" data-edit-key="heroSubtext" contenteditable="false">Tahukah Anda? Setiap hari, rumah tangga kita menghasilkan banyak sampah organik. Di Desa Mojoarum, kami hadir dengan sebuah solusi cerdas untuk mengatasi permasalahan ini melalui program pembuatan Ekoenzim.</p>
-      <div class="hero-actions">
-        <a class="btn primary editable-text" data-edit-key="heroCtaPrimary" contenteditable="false" href="#cta">Dapatkan Gratis</a>
-        <a class="btn secondary editable-text" data-edit-key="heroCtaSecondary" contenteditable="false" href="#docs">Lihat Dokumentasi</a>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <strong class="editable-text" data-edit-key="stat1Value" contenteditable="false">100%</strong>
-          <span class="editable-text" data-edit-key="stat1Label" contenteditable="false">Bahan alami</span>
-        </div>
-        <div class="stat-card">
-          <strong class="editable-text" data-edit-key="stat2Value" contenteditable="false">1:3:10</strong>
-          <span class="editable-text" data-edit-key="stat2Label" contenteditable="false">Rasio fermentasi</span>
-        </div>
-        <div class="stat-card">
-          <strong class="editable-text" data-edit-key="stat3Value" contenteditable="false">Gratis</strong>
-          <span class="editable-text" data-edit-key="stat3Label" contenteditable="false">Untuk warga</span>
-        </div>
-      </div>
-    </div>
-    <div class="wave-divider wave-bottom">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,115.15,189.7,92.83,235.63,75.46,278.43,64.44,321.39,56.44Z" class="shape-fill"></path>
-      </svg>
-    </div>
-  </header>
-
-  <main>
-    <div id="owner-tools" class="owner-tools" hidden>
-      <div class="owner-panel">
-        <h4>Panel Admin</h4>
-        <p>Gunakan panel ini untuk mengubah teks, gambar, dan video. Setelah selesai, klik tombol <strong>Simpan Perubahan</strong>.</p>
-        
-        <div class="admin-grid">
-          <div class="admin-box">
-            <h5>Teks & Gambar</h5>
-            <div class="owner-actions">
-              <button type="button" id="toggle-edit-text" class="btn secondary light">1. Buka Mode Edit Teks</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="logo">Ganti Logo Utama</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="product">Ganti Foto Produk</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="gallery1">Ganti Galeri 1</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="gallery2">Ganti Galeri 2</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="gallery3">Ganti Galeri 3</button>
-              <button type="button" class="btn secondary light owner-trigger" data-target="usage">Ganti Foto Panduan</button>
-            </div>
-          </div>
-          
-          <div class="admin-box">
-            <h5>Video YouTube</h5>
-            <div class="youtube-input-wrap">
-              <input type="text" id="youtube-link-input" placeholder="Tempel link YouTube (contoh: https://youtu.be/dQw4w9WgXcQ)">
-              <button type="button" id="apply-youtube" class="btn secondary light">Terapkan Video</button>
-            </div>
-          </div>
-          
-          <div class="admin-box save-box">
-            <h5>Simpan</h5>
-            <button type="button" id="save-content" class="btn primary">Simpan Semua Perubahan</button>
-            <div class="progress-container" id="save-progress-container" hidden>
-              <div class="progress-bar" id="save-progress-bar"></div>
-            </div>
-            <p id="save-status" class="save-status">Status: Belum ada perubahan disimpan.</p>
-            <div class="owner-actions inline">
-              <a href="admin.html" class="btn secondary light small">Menu Admin</a>
-              <button type="button" id="logout-admin" class="btn secondary light small">Keluar</button>
-              <button type="button" id="clear-preview" class="btn secondary light small">Reset</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <section class="section about">
-      <div class="container two-col">
-        <div class="col text reveal">
-          <div class="eyebrow">Tentang produk</div>
-          <h2 class="editable-text" data-edit-key="aboutTitle" contenteditable="false">Alih-alih membiarkan sisa makanan menumpuk di tempat pembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri.</h2>
-          <p class="editable-text" data-edit-key="aboutText" contenteditable="false">Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan.</p>
-          <div class="feature-pills">
-            <span class="pill editable-text" data-edit-key="pill1" contenteditable="false">Cairan pembersih</span>
-            <span class="pill editable-text" data-edit-key="pill2" contenteditable="false">Pupuk organik</span>
-            <span class="pill editable-text" data-edit-key="pill3" contenteditable="false">Pengusir hama</span>
-          </div>
-          <div class="info-card">
-            <p class="editable-text" data-edit-key="aboutNote" contenteditable="false">Produk ini mudah dibuat, aman, dan dapat disimpan lama bila disimpan dalam wadah tertutup rapat.</p>
-          </div>
-        </div>
-        <div class="col media reveal">
-          <div class="photo-frame">
-            <img class="editable-image" id="product-photo" data-image-key="product" src="assets/images/product.jpg" alt="Foto Eco Enzim Dusun Demangan">
-          </div>
-          <div class="quote-card editable-text" data-edit-key="quoteText" contenteditable="false">"Ekoenzim adalah cairan 'ajaib' yang sangat ekonomis dan ramah lingkungan. Anda bisa memanfaatkannya untuk membersihkan lantai, menjaga kebersihan saluran air, dan mengurangi bau tak sedap."</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section composition">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div class="eyebrow">Komposisi</div>
-          <h2 class="section-title editable-text" data-edit-key="compositionTitle" contenteditable="false">✨ Manfaat Serbaguna untuk Sehari-hari</h2>
-          <p class="editable-text" data-edit-key="compositionText" contenteditable="false">Ekoenzim dapat digunakan untuk membersihkan dan merawat lantai, menjaga kebersihan saluran air, mengurangi bau tidak sedap, serta menjadi alternatif pembersih harian yang bebas bahan kimia berbahaya.</p>
-        </div>
-        <div class="grid three reveal">
-          <div class="card hover-lift">
-            <div class="icon">🍯</div>
-              <h3 class="editable-text" data-edit-key="compositionItem1Title" contenteditable="false">Gula Merah / Molase</h3>
-              <p class="editable-text" data-edit-key="compositionItem1Desc" contenteditable="false">Berperan sebagai sumber makanan mikroba dalam fermentasi.</p>
-          </div>
-          <div class="card hover-lift">
-            <div class="icon">🥬</div>
-              <h3 class="editable-text" data-edit-key="compositionItem2Title" contenteditable="false">Sisa Sayur & Kulit Buah</h3>
-              <p class="editable-text" data-edit-key="compositionItem2Desc" contenteditable="false">Bahan organik yang difermentasi untuk menghasilkan enzim.</p>
-          </div>
-          <div class="card hover-lift">
-            <div class="icon">💧</div>
-              <h3 class="editable-text" data-edit-key="compositionItem3Title" contenteditable="false">Air Bersih</h3>
-              <p class="editable-text" data-edit-key="compositionItem3Desc" contenteditable="false">Pelarut alami yang memfasilitasi proses fermentasi.</p>
-          </div>
-        </div>
-        <p class="ratio editable-text" data-edit-key="compositionRatio" contenteditable="false">Rasio umum pembuatan: <strong>1 : 3 : 10</strong> (molase : bahan organik : air)</p>
-      </div>
-    </section>
-
-    <section class="section usage">
-      <div class="container two-col">
-        <div class="col text reveal">
-          <div class="eyebrow editable-text" data-edit-key="usageEyebrow" contenteditable="false">Panduan Harian</div>
-          <h2 class="editable-text" data-edit-key="usageTitle" contenteditable="false">Satu Cairan, Beragam Solusi Rumah Tangga</h2>
-          <p class="editable-text" data-edit-key="usageDesc" contenteditable="false">Dengan mengganti produk berbahan kimia ke Ekoenzim, Anda turut menjaga kesehatan keluarga sekaligus merawat bumi. Berikut adalah cara praktis mengaplikasikannya di rumah:</p>
-          <div class="photo-frame mt-2">
-            <img class="editable-image" id="usage-photo" data-image-key="usage" src="assets/images/gallery2-placeholder.svg" alt="Ilustrasi penggunaan">
-          </div>
-        </div>
-        <div class="col list reveal">
-          <ul class="usage-list">
-            <li>
-              <div class="icon">✨</div>
-              <div>
-                <strong class="editable-text" data-edit-key="usagePoint1Title" contenteditable="false">Mengepel dan Merawat Lantai:</strong>
-                <span class="editable-text" data-edit-key="usagePoint1Desc" contenteditable="false">Jadikan ekoenzim sebagai andalan cairan pembersih harian untuk membersihkan dan merawat lantai rumah Anda agar bersih kesat secara alami.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🚽</div>
-              <div>
-                <strong class="editable-text" data-edit-key="usagePoint2Title" contenteditable="false">Pembersihan WC dan Saluran Air:</strong>
-                <span class="editable-text" data-edit-key="usagePoint2Desc" contenteditable="false">Tuangkan cairan "ajaib" ini secara berkala untuk menjaga kebersihan saluran air serta mencegah kotoran menempel.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🌬️</div>
-              <div>
-                <strong class="editable-text" data-edit-key="usagePoint3Title" contenteditable="false">Penghilang Bau Tidak Sedap:</strong>
-                <span class="editable-text" data-edit-key="usagePoint3Desc" contenteditable="false">Semprotkan atau tuangkan ekoenzim untuk mengurangi bau tidak sedap di sudut-sudut ruangan, area tempat sampah, atau kamar mandi.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🌱</div>
-              <div>
-                <strong class="editable-text" data-edit-key="usagePoint4Title" contenteditable="false">Penyubur Tanaman:</strong>
-                <span class="editable-text" data-edit-key="usagePoint4Desc" contenteditable="false">Encerkan dengan air dan gunakan sebagai pupuk organik cair yang sangat baik untuk menyuburkan tanaman di pekarangan Anda.</span>
-              </div>
-            </li>
-            <li>
-              <div class="icon">🐛</div>
-              <div>
-                <strong class="editable-text" data-edit-key="usagePoint5Title" contenteditable="false">Pengusir Hama Alami:</strong>
-                <span class="editable-text" data-edit-key="usagePoint5Desc" contenteditable="false">Aplikasikan cairan ini di area yang rentan, karena selain menyuburkan tanaman, ekoenzim juga ampuh sebagai pengusir hama yang aman dan ramah lingkungan.</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section highlight">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div class="eyebrow editable-text" data-edit-key="stepsEyebrow" contenteditable="false">Cara Pembuatan</div>
-          <h2 class="editable-text" data-edit-key="stepsTitle" contenteditable="false">Tiga Langkah Mudah dalam Semangat Gotong Royong</h2>
-          <p class="editable-text" data-edit-key="stepsDesc" contenteditable="false">Membuat Ekoenzim adalah aktivitas yang menyenangkan, apalagi jika dikerjakan bersama-sama. Berikut adalah tahapan mudah yang kami lakukan di Dusun Demangan:</p>
-        </div>
-        <div class="steps-grid">
-          <div class="step-card reveal" data-popup-key="step1Popup">
-            <span class="step-number">01</span>
-            <h3 class="editable-text" data-edit-key="step1Title" contenteditable="false">Kumpulkan sisa dapur</h3>
-            <p class="editable-text" data-edit-key="step1Text" contenteditable="false">Sayur, kulit buah, dan sisa organik dipilah untuk dijadikan bahan utama.</p>
-          </div>
-          <div class="step-card reveal" data-popup-key="step2Popup">
-            <span class="step-number">02</span>
-            <h3 class="editable-text" data-edit-key="step2Title" contenteditable="false">Campur dan fermentasi</h3>
-            <p class="editable-text" data-edit-key="step2Text" contenteditable="false">Proses sederhana dilakukan secara bersama-sama agar hasilnya konsisten dan aman.</p>
-          </div>
-          <div class="step-card reveal" data-popup-key="step3Popup">
-            <span class="step-number">03</span>
-            <h3 class="editable-text" data-edit-key="step3Title" contenteditable="false">Bagikan untuk warga</h3>
-            <p class="editable-text" data-edit-key="step3Text" contenteditable="false">Produk siap dipakai di rumah, ditanam di pekarangan, atau dibagikan ke tetangga.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="docs" class="section docs">
-      <div class="container">
-        <div class="section-heading reveal">
-          <div class="eyebrow">Dokumentasi</div>
-          <h2 class="editable-text" data-edit-key="docsTitle" contenteditable="false">Proses gotong royong warga Demangan</h2>
-          <p class="editable-text" data-edit-key="docsText" contenteditable="false">Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.</p>
-        </div>
-        <div class="video-wrap reveal">
-          <iframe id="video-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen title="Dokumentasi"></iframe>
-        </div>
-        <div class="video-controls reveal">
-          <span class="admin-hint editable-text" data-edit-key="adminHint" contenteditable="false">Admin dapat mengubah narasi dan foto melalui panel edit.</span>
-        </div>
-
-        <div class="gallery reveal">
-          <figure class="gallery-item">
-            <img class="editable-image" id="gal1" data-image-key="gallery1" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" src="assets/images/galeri-1.jpg" alt="Galeri 1">
-            <figcaption class="image-caption editable-text" data-edit-key="gallery1Caption" contenteditable="false">Galeri 1: Proses pembuatan dan dokumentasi lapangan</figcaption>
-          </figure>
-          <figure class="gallery-item">
-            <img class="editable-image" id="gal2" data-image-key="gallery2" data-caption="Galeri 2: Hasil akhir dan pemakaian produk" src="assets/images/galeri-2.jpg" alt="Galeri 2">
-            <figcaption class="image-caption editable-text" data-edit-key="gallery2Caption" contenteditable="false">Galeri 2: Hasil akhir dan pemakaian produk</figcaption>
-          </figure>
-          <figure class="gallery-item">
-            <img class="editable-image" id="gal3" data-image-key="gallery3" data-caption="Galeri 3: Atmosfer komunitas dan kegiatan bersama" src="assets/images/galeri-3.jpg" alt="Galeri 3">
-            <figcaption class="image-caption editable-text" data-edit-key="gallery3Caption" contenteditable="false">Galeri 3: Atmosfer komunitas dan kegiatan bersama</figcaption>
-          </figure>
-        </div>
-        <p class="caption editable-text" data-edit-key="galleryCaption" contenteditable="false">Klik foto untuk mengganti dengan foto dokumentasi Anda.</p>
-      </div>
-    </section>
-
-    <section id="cta" class="section cta">
-      <div class="cta-box reveal">
-        <div class="eyebrow accent editable-text" data-edit-key="ctaEyebrow" contenteditable="false">Program khusus</div>
-        <h2 class="editable-text" data-edit-key="ctaTitle" contenteditable="false">Program Pembagian <span class="big-red">GRATIS</span> untuk Warga!</h2>
-        <p class="editable-text" data-edit-key="ctaText" contenteditable="false">Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.</p>
-        <div class="cta-actions">
-          <a id="whatsapp-btn" class="btn contact editable-text" data-edit-key="whatsappText" contenteditable="false" href="#" data-phone="+6281216954172">Hubungi Pengurus PKK</a>
-          <a class="btn secondary light" href="#top">Kembali ke atas</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p class="editable-text" data-edit-key="footerLine1" contenteditable="false">© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.</p>
-    <p class="editable-text" data-edit-key="footerLine2" contenteditable="false">Mari bersama wujudkan desa bersih, sehat, dan mandiri.</p>
-  </footer>
-
-  <div id="preview-modal" class="preview-modal hidden" aria-hidden="true">
-    <div class="preview-backdrop"></div>
-    <div class="preview-panel" role="dialog" aria-modal="true">
-      <button id="preview-close" class="preview-close" aria-label="Tutup preview">×</button>
-      <div id="preview-text-view" class="preview-view">
-        <h3 id="preview-text-title" class="preview-title"></h3>
-        <div id="preview-text-body" class="preview-body"></div>
-      </div>
-      <div id="preview-image-view" class="preview-view hidden">
-        <button id="preview-prev" class="preview-nav preview-prev" aria-label="Gambar sebelumnya">‹</button>
-        <div class="preview-image-wrap">
-          <img id="preview-image" class="preview-image" src="" alt="Preview gambar">
-          <p id="preview-image-caption" class="preview-image-caption"></p>
-        </div>
-        <button id="preview-next" class="preview-nav preview-next" aria-label="Gambar berikutnya">›</button>
-      </div>
-    </div>
-  </div>
-
-  <input type="file" id="img-file-input" accept="image/*" style="display:none">
-  <script src="assets/js/script.js?v=20260709"></script>
+<!-- Rich Text Toolbar (Hidden by default) -->
+<div class="rt-toolbar" hidden="" id="rich-text-toolbar">
+<div class="rt-group">
+<button class="rt-btn" data-command="bold" title="Bold"><b>B</b></button>
+<button class="rt-btn" data-command="italic" title="Italic"><i>I</i></button>
+<button class="rt-btn" data-command="underline" title="Underline"><u>U</u></button>
+</div>
+<div class="rt-group">
+<select class="rt-select" id="rt-fontName" title="Font Family">
+<option value="Inter, sans-serif">Inter</option>
+<option value="'Poppins', sans-serif">Poppins</option>
+<option value="'Roboto', sans-serif">Roboto</option>
+<option value="'Nunito', sans-serif">Nunito</option>
+<option value="'Montserrat', sans-serif">Montserrat</option>
+<option value="'Lora', serif">Lora (Serif)</option>
+<option value="'Oswald', sans-serif">Oswald</option>
+<option value="'Playfair Display', serif">Playfair Display</option>
+<option value="'Caveat', cursive">Caveat (Tulis Tangan)</option>
+</select>
+<select class="rt-select" id="rt-fontSize" title="Font Size">
+<option value="3">Normal</option>
+<option value="4">Besar</option>
+<option value="5">Lebih Besar</option>
+<option value="6">Sangat Besar</option>
+<option value="7">Raksasa</option>
+</select>
+<div class="rt-color-container">
+<span class="rt-label">Teks:</span>
+<div class="rt-colors-preset" id="rt-text-presets">
+<button class="rt-color-swatch" data-color="#082454" style="background:#082454" title="Biru Gelap"></button>
+<button class="rt-color-swatch" data-color="#0284c7" style="background:#0284c7" title="Biru Terang"></button>
+<button class="rt-color-swatch" data-color="#10b981" style="background:#10b981" title="Hijau"></button>
+<button class="rt-color-swatch" data-color="#ef4444" style="background:#ef4444" title="Merah"></button>
+<button class="rt-color-swatch" data-color="#f59e0b" style="background:#f59e0b" title="Kuning"></button>
+<button class="rt-color-swatch" data-color="#1e293b" style="background:#1e293b" title="Hitam"></button>
+</div>
+<input class="rt-color" id="rt-foreColor" title="Warna Kustom" type="color"/>
+</div>
+<div class="rt-color-container">
+<span class="rt-label">Stabilo:</span>
+<div class="rt-colors-preset" id="rt-bg-presets">
+<button class="rt-color-swatch" data-color="transparent" style="background:transparent; border:1px dashed #cbd5e1" title="Tanpa Warna"></button>
+<button class="rt-color-swatch" data-color="#fef08a" style="background:#fef08a" title="Kuning Stabilo"></button>
+<button class="rt-color-swatch" data-color="#bbf7d0" style="background:#bbf7d0" title="Hijau Stabilo"></button>
+<button class="rt-color-swatch" data-color="#bfdbfe" style="background:#bfdbfe" title="Biru Stabilo"></button>
+<button class="rt-color-swatch" data-color="#fbcfe8" style="background:#fbcfe8" title="Pink Stabilo"></button>
+</div>
+<input class="rt-color" id="rt-hiliteColor" title="Warna Latar Kustom" type="color" value="#ffffff"/>
+</div>
+</div>
+<div class="rt-group">
+<button class="rt-btn" data-command="justifyLeft" title="Rata Kiri">⫷</button>
+<button class="rt-btn" data-command="justifyCenter" title="Rata Tengah">☰</button>
+<button class="rt-btn" data-command="justifyRight" title="Rata Kanan">⫸</button>
+</div>
+</div>
+<header class="hero">
+<div class="hero-glow"></div>
+<div class="leaf-pattern leaf-left"></div>
+<div class="leaf-pattern leaf-right"></div>
+<div class="hero-inner">
+<div class="brand-block">
+<img alt="Logo Eco Enzim Dusun Demangan" class="brand-logo editable-image" data-image-key="logo" id="hero-logo" src="assets/images/Logo.png"/>
+</div>
+<div class="hero-badge editable-text" contenteditable="false" data-edit-key="heroBadge">Mengubah Sampah Jadi Berkah: Gerakan Ekoenzim Desa Mojoarum</div>
+<h1 class="headline editable-text" contenteditable="false" data-edit-key="heroHeadline">Solusi Cerdas Kelola Sampah Organik Rumah Tangga</h1>
+<p class="subtext editable-text" contenteditable="false" data-edit-key="heroSubtext">Tahukah Anda? Setiap hari, rumah tangga kita menghasilkan banyak sampah organik. Daripada membiarkannya berakhir di tempat pembuangan, warga Desa Mojoarum hadir dengan sebuah solusi cerdas untuk mengatasi permasalahan ini melalui program pembuatan Ekoenzim. Mari bergabung dalam gerakan inovatif yang menyulap sisa dapur menjadi cairan serbaguna penyelamat bumi!</p>
+<div class="hero-actions">
+<a class="btn primary editable-text" contenteditable="false" data-edit-key="heroCtaPrimary" href="#cta">Dapatkan Gratis</a>
+<a class="btn secondary editable-text" contenteditable="false" data-edit-key="heroCtaSecondary" href="#docs">Lihat Dokumentasi</a>
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<strong class="editable-text" contenteditable="false" data-edit-key="stat1Value">100%</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="stat1Label">Bahan alami</span>
+</div>
+<div class="stat-card">
+<strong class="editable-text" contenteditable="false" data-edit-key="stat2Value">Homemade</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="stat2Label">Produk Rumahan</span>
+</div>
+<div class="stat-card">
+<strong class="editable-text" contenteditable="false" data-edit-key="stat3Value">Eco Friendly</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="stat3Label">Ramah Lingkungan</span>
+</div>
+</div>
+</div>
+<div class="wave-divider wave-bottom">
+<svg preserveaspectratio="none" viewbox="0 0 1200 120">
+<path class="shape-fill" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,115.15,189.7,92.83,235.63,75.46,278.43,64.44,321.39,56.44Z"></path>
+</svg>
+</div>
+</header>
+<main>
+<div class="owner-tools" hidden="" id="owner-tools">
+<div class="owner-panel">
+<h4>Panel Admin</h4>
+<p>Gunakan panel ini untuk mengubah teks, gambar, dan video. Setelah selesai, klik tombol <strong>Simpan Perubahan</strong>.</p>
+<div class="admin-grid">
+<div class="admin-box">
+<h5>Teks &amp; Gambar</h5>
+<div class="owner-actions">
+<button class="btn secondary light" id="toggle-edit-text" type="button">1. Buka Mode Edit Teks</button>
+<button class="btn secondary light owner-trigger" data-target="logo" type="button">Ganti Logo Utama</button>
+<button class="btn secondary light owner-trigger" data-target="product" type="button">Ganti Foto Produk</button>
+<button class="btn secondary light owner-trigger" data-target="gallery1" type="button">Ganti Galeri 1</button>
+<button class="btn secondary light owner-trigger" data-target="gallery2" type="button">Ganti Galeri 2</button>
+<button class="btn secondary light owner-trigger" data-target="gallery3" type="button">Ganti Galeri 3</button>
+<button class="btn secondary light owner-trigger" data-target="usage" type="button">Ganti Foto Panduan</button>
+</div>
+</div>
+<div class="admin-box">
+<h5>Video YouTube</h5>
+<div class="youtube-input-wrap">
+<input id="youtube-link-input" placeholder="Tempel link YouTube (contoh: https://youtu.be/dQw4w9WgXcQ)" type="text"/>
+<button class="btn secondary light" id="apply-youtube" type="button">Terapkan Video</button>
+</div>
+</div>
+<div class="admin-box save-box">
+<h5>Simpan</h5>
+<button class="btn primary" id="save-content" type="button">Simpan Semua Perubahan</button>
+<div class="progress-container" hidden="" id="save-progress-container">
+<div class="progress-bar" id="save-progress-bar"></div>
+</div>
+<p class="save-status" id="save-status">Status: Belum ada perubahan disimpan.</p>
+<div class="owner-actions inline">
+<a class="btn secondary light small" href="admin.html">Menu Admin</a>
+<button class="btn secondary light small" id="logout-admin" type="button">Keluar</button>
+<button class="btn secondary light small" id="clear-preview" type="button">Reset</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section class="section about">
+<div class="container two-col">
+<div class="col text reveal">
+<div class="eyebrow">Tentang produk</div>
+<h2 class="editable-text" contenteditable="false" data-edit-key="aboutTitle">Menyulap Sisa Makanan Menjadi Cairan "Ajaib" yang Kaya Manfaat</h2>
+<p class="editable-text" contenteditable="false" data-edit-key="aboutText">Pernahkah terbayangkan bahwa sisa kulit buah dan potongan sayur yang biasanya dibuang kini bisa menjadi produk yang sangat berharga? Alih-alih membiarkan sisa makanan menumpuk di tempat pembuangan, kami mengajak seluruh masyarakat untuk mengolahnya secara mandiri.<br/><br/>Langkah kecil ini tidak hanya mengurangi volume sampah, tetapi juga menciptakan lingkungan desa yang lebih bersih, sehat, dan berkelanjutan. Ekoenzim adalah wujud nyata kepedulian kita terhadap alam, yang manfaatnya langsung bisa kita rasakan setiap hari.</p>
+<div class="feature-pills">
+<span class="pill editable-text" contenteditable="false" data-edit-key="pill1">Cairan pembersih</span>
+<span class="pill editable-text" contenteditable="false" data-edit-key="pill2">Pupuk organik</span>
+<span class="pill editable-text" contenteditable="false" data-edit-key="pill3">Pengusir hama</span>
+</div>
+<div class="info-card">
+<p class="editable-text" contenteditable="false" data-edit-key="aboutNote">Produk ini mudah dibuat, aman, dan dapat disimpan lama bila disimpan dalam wadah tertutup rapat.</p>
+</div>
+</div>
+<div class="col media reveal">
+<div class="photo-frame">
+<img alt="Foto Eco Enzim Dusun Demangan" class="editable-image" data-image-key="product" id="product-photo" src="assets/images/product.jpg"/>
+</div>
+<div class="quote-card editable-text" contenteditable="false" data-edit-key="quoteText">"Ekoenzim adalah cairan 'ajaib' yang sangat ekonomis dan ramah lingkungan. Anda bisa memanfaatkannya untuk membersihkan lantai, menjaga kebersihan saluran air, dan mengurangi bau tak sedap."
+</div>
+</div>
+</div>
+</section>
+<section class="section composition">
+<div class="container">
+<div class="section-heading reveal">
+<div class="eyebrow">Komposisi</div>
+<h2 class="section-title editable-text" contenteditable="false" data-edit-key="compositionTitle">✨ Keajaiban dari Tiga Bahan Alami</h2>
+<p class="editable-text" contenteditable="false" data-edit-key="compositionText">Untuk menciptakan rumah yang bersih dan asri, Anda tidak selalu harus bergantung pada produk pabrik. Ekoenzim dapat digunakan untuk membersihkan dan merawat lantai, menjaga kebersihan saluran air, mengurangi bau tidak sedap, serta menjadi alternatif pembersih harian yang bebas bahan kimia berbahaya. Apa rahasia di baliknya? Semua ini bermula dari perpaduan sederhana namun mematikan bagi kuman:</p>
+</div>
+<div class="grid three reveal">
+<div class="card hover-lift">
+<div class="icon">🍯</div>
+<h3 class="editable-text" contenteditable="false" data-edit-key="compositionItem1Title">Gula Merah / Molase</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="compositionItem1Desc">Berperan sebagai sumber makanan mikroba dalam fermentasi. Bahan inilah yang mengawali proses keajaiban biologi di dalam wadah fermentasi Anda.</p>
+</div>
+<div class="card hover-lift">
+<div class="icon">🥬</div>
+<h3 class="editable-text" contenteditable="false" data-edit-key="compositionItem2Title">Sisa Sayur &amp; Kulit Buah</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="compositionItem2Desc">Bahan organik yang difermentasi untuk menghasilkan enzim. <em>Tips: Penggunaan kulit jeruk, lemon, atau nanas dapat memberikan ekstra aroma segar pada hasil akhir ekoenzim Anda!</em></p>
+</div>
+<div class="card hover-lift">
+<div class="icon">💧</div>
+<h3 class="editable-text" contenteditable="false" data-edit-key="compositionItem3Title">Air Bersih</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="compositionItem3Desc">Pelarut alami yang memfasilitasi proses fermentasi, menyatukan seluruh bahan hingga bereaksi dan matang dengan sempurna.</p>
+</div>
+</div>
+<p class="ratio editable-text" contenteditable="false" data-edit-key="compositionRatio">Rasio umum pembuatan: <strong>1 : 3 : 10</strong> (molase : bahan organik : air). Cukup ikuti takaran ini, dan alam akan melakukan sisanya!</p>
+</div>
+</section>
+<section class="section usage">
+<div class="container two-col">
+<div class="col text reveal">
+<div class="eyebrow editable-text" contenteditable="false" data-edit-key="usageEyebrow">Panduan Harian</div>
+<h2 class="editable-text" contenteditable="false" data-edit-key="usageTitle">Satu Cairan, Berjuta Solusi untuk Hunian Anda</h2>
+<p class="editable-text" contenteditable="false" data-edit-key="usageDesc">Mengurangi paparan bahan kimia di rumah bukan lagi sekadar impian. Dengan sebotol Ekoenzim, Anda memiliki "senjata" alami yang serbaguna untuk berbagai aktivitas rumah tangga:</p>
+<div class="photo-frame mt-2">
+<img alt="Ilustrasi penggunaan" class="editable-image" data-image-key="usage" id="usage-photo" src="assets/images/gallery2-placeholder.svg"/>
+</div>
+</div>
+<div class="col list reveal">
+<ul class="usage-list">
+<li>
+<div class="icon">✨</div>
+<div>
+<strong class="editable-text" contenteditable="false" data-edit-key="usagePoint1Title">Mengepel dan Merawat Lantai:</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="usagePoint1Desc">Jadikan ekoenzim sebagai andalan cairan pembersih harian Anda. Produk ini sangat ideal untuk membersihkan dan merawat lantai agar kesat, mengkilap, dan tentunya lebih aman bagi anak-anak yang bermain di lantai.</span>
+</div>
+</li>
+<li>
+<div class="icon">🚽</div>
+<div>
+<strong class="editable-text" contenteditable="false" data-edit-key="usagePoint2Title">Pembersihan Saluran Air dan WC:</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="usagePoint2Desc">Jangan tunggu sampai mampet! Tuangkan cairan "ajaib" ini secara rutin untuk melarutkan lemak dan kotoran, sekaligus menjaga kebersihan saluran air di rumah Anda.</span>
+</div>
+</li>
+<li>
+<div class="icon">🌬️</div>
+<div>
+<strong class="editable-text" contenteditable="false" data-edit-key="usagePoint3Title">Penghilang Bau Tidak Sedap:</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="usagePoint3Desc">Ekoenzim memiliki sifat penetralisir yang luar biasa. Semprotkan atau tuangkan sedikit cairan ini untuk mengurangi bau tak sedap di area tempat sampah, sudut dapur, hingga kamar mandi.</span>
+</div>
+</li>
+<li>
+<div class="icon">🌱</div>
+<div>
+<strong class="editable-text" contenteditable="false" data-edit-key="usagePoint4Title">Penyubur Tanaman:</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="usagePoint4Desc">Ekoenzim bukan hanya pahlawan di dalam rumah, tapi juga di kebun! Cairan ini bisa dimanfaatkan sebagai pupuk organik cair untuk menyuburkan tanah dan dedaunan di pekarangan Anda.</span>
+</div>
+</li>
+<li>
+<div class="icon">🐛</div>
+<div>
+<strong class="editable-text" contenteditable="false" data-edit-key="usagePoint5Title">Pengusir Hama Alami:</strong>
+<span class="editable-text" contenteditable="false" data-edit-key="usagePoint5Desc">Ciptakan tameng pelindung bagi tanaman kesayangan Anda. Semprotkan secara merata karena cairan ini sangat efektif sebagai pengusir hama alami tanpa merusak ekosistem sekitarnya.</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="section highlight">
+<div class="container">
+<div class="section-heading reveal">
+<div class="eyebrow editable-text" contenteditable="false" data-edit-key="stepsEyebrow">Cara Pembuatan</div>
+<h2 class="editable-text" contenteditable="false" data-edit-key="stepsTitle">Tiga Langkah Mudah dalam Semangat Gotong Royong</h2>
+<p class="editable-text" contenteditable="false" data-edit-key="stepsDesc">Membuat Ekoenzim adalah aktivitas yang menyenangkan, apalagi jika dikerjakan bersama-sama. Berikut adalah tahapan mudah yang kami lakukan di Dusun Demangan:</p>
+</div>
+<div class="steps-grid">
+<div class="step-card reveal" data-popup-key="step1Popup">
+<span class="step-number">01</span>
+<h3 class="editable-text" contenteditable="false" data-edit-key="step1Title">Kumpulkan sisa dapur</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="step1Text">Mulailah dari dapur Anda sendiri. Sayur, kulit buah, dan sisa organik dipilah untuk dijadikan bahan utama. Pastikan sisa organik dalam kondisi segar (bukan busuk) agar menghasilkan enzim berkualitas.</p>
+</div>
+<div class="step-card reveal" data-popup-key="step2Popup">
+<span class="step-number">02</span>
+<h3 class="editable-text" contenteditable="false" data-edit-key="step2Title">Campur dan fermentasi</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="step2Text">Semua bahan dicampur sesuai rasio. Proses sederhana dilakukan secara bersama-sama agar hasilnya konsisten dan aman. Kesabaran adalah kuncinya, biarkan wadah tertutup rapat selama beberapa bulan hingga enzim terbentuk sempurna.</p>
+</div>
+<div class="step-card reveal" data-popup-key="step3Popup">
+<span class="step-number">03</span>
+<h3 class="editable-text" contenteditable="false" data-edit-key="step3Title">Bagikan untuk warga</h3>
+<p class="editable-text" contenteditable="false" data-edit-key="step3Text">Kebahagiaan sejati adalah saat kita bisa menebar manfaat. Produk siap dipakai di rumah, ditanam di pekarangan, atau dibagikan ke tetangga.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section docs" id="docs">
+<div class="container">
+<div class="section-heading reveal">
+<div class="eyebrow">Dokumentasi</div>
+<h2 class="editable-text" contenteditable="false" data-edit-key="docsTitle">Proses gotong royong warga Demangan</h2>
+<p class="editable-text" contenteditable="false" data-edit-key="docsText">Kekompakan warga adalah kunci suksesnya gerakan lingkungan ini. Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.</p>
+</div>
+<div class="video-wrap reveal">
+<iframe allowfullscreen="" frameborder="0" id="video-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Dokumentasi"></iframe>
+</div>
+<div class="video-controls reveal">
+<span class="admin-hint editable-text" contenteditable="false" data-edit-key="adminHint">Admin dapat mengubah narasi dan foto melalui panel edit.</span>
+</div>
+<div class="gallery reveal">
+<figure class="gallery-item">
+<img alt="Galeri 1" class="editable-image" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" data-image-key="gallery1" id="gal1" src="assets/images/galeri-1.jpg"/>
+<figcaption class="image-caption editable-text" contenteditable="false" data-edit-key="gallery1Caption">Galeri 1: Proses pembuatan dan dokumentasi lapangan</figcaption>
+</figure>
+<figure class="gallery-item">
+<img alt="Galeri 2" class="editable-image" data-caption="Galeri 2: Hasil akhir dan pemakaian produk" data-image-key="gallery2" id="gal2" src="assets/images/galeri-2.jpg"/>
+<figcaption class="image-caption editable-text" contenteditable="false" data-edit-key="gallery2Caption">Galeri 2: Hasil akhir dan pemakaian produk</figcaption>
+</figure>
+<figure class="gallery-item">
+<img alt="Galeri 3" class="editable-image" data-caption="Galeri 3: Atmosfer komunitas dan kegiatan bersama" data-image-key="gallery3" id="gal3" src="assets/images/galeri-3.jpg"/>
+<figcaption class="image-caption editable-text" contenteditable="false" data-edit-key="gallery3Caption">Galeri 3: Atmosfer komunitas dan kegiatan bersama</figcaption>
+</figure>
+</div>
+<p class="caption editable-text" contenteditable="false" data-edit-key="galleryCaption">Klik foto untuk mengganti dengan foto dokumentasi Anda.</p>
+</div>
+</section>
+<section class="section cta" id="cta">
+<div class="cta-box reveal">
+<div class="eyebrow accent editable-text" contenteditable="false" data-edit-key="ctaEyebrow">Program E-Commerce</div>
+<h2 class="editable-text" contenteditable="false" data-edit-key="ctaTitle">Mulai <span class="big-red">HIDUP BERSIH!</span></h2>
+<p class="editable-text" contenteditable="false" data-edit-key="ctaText">Mari wujudkan lingkungan yang lebih sehat dimulai dari rumah tangga kita. Produk ini siap dibagikan khusus untuk masyarakat dan ibu-ibu PKK Dusun Demangan.</p>
+<div class="cta-actions">
+<a class="btn contact editable-text" contenteditable="false" data-edit-key="whatsappText" data-phone="+6281216954172" href="#" id="whatsapp-btn">Kunjungi Toko</a>
+<a class="btn secondary light" href="#top">Kembali ke atas</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<p class="editable-text" contenteditable="false" data-edit-key="footerLine1">© 2026 Inisiatif Warga Dusun Demangan, Desa Mojoarum, Kec. Gondang, Kab. Tulungagung.</p>
+<p class="editable-text" contenteditable="false" data-edit-key="footerLine2">Mari bersama wujudkan desa bersih, sehat, dan mandiri.</p>
+</footer>
+<div aria-hidden="true" class="preview-modal hidden" id="preview-modal">
+<div class="preview-backdrop"></div>
+<div aria-modal="true" class="preview-panel" role="dialog">
+<button aria-label="Tutup preview" class="preview-close" id="preview-close">×</button>
+<div class="preview-view" id="preview-text-view">
+<h3 class="preview-title" id="preview-text-title"></h3>
+<div class="preview-body" id="preview-text-body"></div>
+</div>
+<div class="preview-view hidden" id="preview-image-view">
+<button aria-label="Gambar sebelumnya" class="preview-nav preview-prev" id="preview-prev">‹</button>
+<div class="preview-image-wrap">
+<img alt="Preview gambar" class="preview-image" id="preview-image" src=""/>
+<p class="preview-image-caption" id="preview-image-caption"></p>
+</div>
+<button aria-label="Gambar berikutnya" class="preview-nav preview-next" id="preview-next">›</button>
+</div>
+</div>
+</div>
+<input accept="image/*" id="img-file-input" style="display:none" type="file"/>
+<script src="assets/js/script.js?v=20260709"></script>
 </body>
 </html>
