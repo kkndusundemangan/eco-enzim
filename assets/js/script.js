@@ -475,7 +475,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewPrev = document.getElementById('preview-prev');
   const previewNext = document.getElementById('preview-next');
 
-  const imageElements = Array.from(document.querySelectorAll('.editable-image'));
+  const galleryImageElements = Array.from(document.querySelectorAll('.gallery .editable-image'));
+  const stepPopupElements = Array.from(document.querySelectorAll('.step-card[data-popup-key]'));
   let currentImageIndex = 0;
 
   const openModal = () => {
@@ -492,8 +493,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   };
 
+  const hidePreviewViews = () => {
+    if (previewTextView) previewTextView.classList.add('hidden');
+    if (previewImageView) previewImageView.classList.add('hidden');
+  };
+
   const showTextPreview = (title, body, popupKey = '') => {
     if (!previewTextView || !previewImageView) return;
+    hidePreviewViews();
     previewTitle.textContent = title || 'Detail teks';
     previewBody.innerHTML = body || '';
     previewBody.removeAttribute('contenteditable');
@@ -501,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
     previewBody.oninput = null;
     previewBody.onblur = null;
 
-    // If owner/editor mode is active, make the modal body editable so admin can modify popup content directly
     if (ownerMode && editingText) {
       previewBody.setAttribute('contenteditable', 'true');
       previewBody.classList.add('is-editing');
@@ -513,6 +519,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       };
     }
+
     previewTextView.classList.remove('hidden');
     previewImageView.classList.add('hidden');
     openModal();
@@ -520,8 +527,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const showImagePreview = (index) => {
     if (!previewTextView || !previewImageView || !previewImage) return;
-    const imageEl = imageElements[index];
+    const imageEl = galleryImageElements[index];
     if (!imageEl) return;
+    hidePreviewViews();
     currentImageIndex = index;
     previewImage.src = imageEl.src;
     previewImage.alt = imageEl.alt || 'Preview gambar';
@@ -542,28 +550,28 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   previewPrev?.addEventListener('click', () => {
-    const nextIndex = (currentImageIndex - 1 + imageElements.length) % imageElements.length;
+    const nextIndex = (currentImageIndex - 1 + galleryImageElements.length) % galleryImageElements.length;
     showImagePreview(nextIndex);
   });
 
   previewNext?.addEventListener('click', () => {
-    const nextIndex = (currentImageIndex + 1) % imageElements.length;
+    const nextIndex = (currentImageIndex + 1) % galleryImageElements.length;
     showImagePreview(nextIndex);
   });
 
-  document.querySelectorAll('[data-popup-key]').forEach((el) => {
+  stepPopupElements.forEach((el) => {
     el.addEventListener('click', (event) => {
       if (editingText) return;
       const popupKey = el.getAttribute('data-popup-key');
       if (!popupKey) return;
-      const key = el.querySelector('[data-edit-key]')?.getAttribute('data-edit-key') || el.getAttribute('data-edit-key') || 'Detail teks';
-      const title = key.replace(/([A-Z])/g, ' $1').trim();
+      const titleKey = el.querySelector('[data-edit-key]')?.getAttribute('data-edit-key') || el.getAttribute('data-edit-key');
+      const title = titleKey ? titleKey.replace(/([A-Z])/g, ' $1').trim() : 'Detail langkah';
       const popupContent = state.texts[popupKey] || el.innerHTML;
       showTextPreview(title, popupContent, popupKey);
     });
   });
 
-  imageElements.forEach((img, index) => {
+  galleryImageElements.forEach((img, index) => {
     img.addEventListener('click', () => {
       if (editingText) return;
       showImagePreview(index);
