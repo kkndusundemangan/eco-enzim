@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         galWrap.appendChild(figure);
       });
       if (ownerMode) {
-        if (galBtns) galBtns.innerHTML += '<button class="btn secondary" id="add-gal-btn" type="button" style="display:block;margin-top:10px;">+ Tambah Foto Dokumentasi</button>';
+        if (galBtns) galBtns.innerHTML += '<button class="btn secondary light" id="add-gal-btn" type="button" style="display:block;margin-top:10px;">+ Tambah Foto Dokumentasi</button>';
       }
     }
 
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
         vidWrap.appendChild(div);
       });
       if (ownerMode) {
-         vidWrap.innerHTML += '<button class="btn secondary" id="add-vid-btn" type="button" style="margin-top:10px;">+ Tambah Video</button>';
+         vidWrap.innerHTML += '<button class="btn secondary light" id="add-vid-btn" type="button" style="margin-top:10px;">+ Tambah Video</button>';
       }
     }
   };
