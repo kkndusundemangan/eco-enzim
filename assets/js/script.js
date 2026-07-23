@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const ownerMode = new URLSearchParams(window.location.search).get('owner') === 'demangan2026' || sessionStorage.getItem('ecoEnzimAdmin') === 'true' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const token = sessionStorage.getItem('ecoEnzimToken');
+  const ownerMode = !!token;
   const ownerTools = document.getElementById('owner-tools');
   const fileInput = document.getElementById('img-file-input');
   const saveStatus = document.getElementById('save-status');
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const clearAdminSession = () => {
     sessionStorage.removeItem('ecoEnzimAdmin');
+    sessionStorage.removeItem('ecoEnzimToken');
     localStorage.removeItem('ecoEnzimAdmin');
   };
 
@@ -236,10 +238,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const progressInterval = simulateProgress(true, 3000);
 
     const saveViaCloudflare = async () => {
-      const response = await fetch('https://eco-enzim.pages.dev/api/save-content', {
+      const response = await fetch('/api/save-content', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
         },
         body: JSON.stringify(payload),
         cache: 'no-store'
@@ -624,6 +627,62 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutBtn.addEventListener('click', () => {
       clearAdminSession();
       window.location.href = 'index.html';
+    });
+  }
+
+  // Change Password Logic
+  const changePasswordBtn = document.getElementById('change-password-btn');
+  const changePasswordModal = document.getElementById('change-password-modal');
+  const changePasswordClose = document.getElementById('change-password-close');
+  const changePasswordForm = document.getElementById('change-password-form');
+  const changePasswordMsg = document.getElementById('change-password-message');
+
+  if (changePasswordBtn && changePasswordModal) {
+    changePasswordBtn.addEventListener('click', () => {
+      changePasswordModal.classList.remove('hidden');
+      changePasswordModal.setAttribute('aria-hidden', 'false');
+      changePasswordMsg.textContent = '';
+      if (changePasswordForm) changePasswordForm.reset();
+    });
+
+    changePasswordClose?.addEventListener('click', () => {
+      changePasswordModal.classList.add('hidden');
+      changePasswordModal.setAttribute('aria-hidden', 'true');
+    });
+
+    changePasswordForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      changePasswordMsg.textContent = 'Menyimpan...';
+      changePasswordMsg.style.color = '#0284c7';
+      
+      const oldPass = document.getElementById('cp-old').value;
+      const newPass = document.getElementById('cp-new').value;
+
+      try {
+        const response = await fetch('/api/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('ecoEnzimToken')}`
+          },
+          body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+          changePasswordMsg.textContent = 'Password berhasil diubah.';
+          changePasswordMsg.style.color = '#10b981';
+          setTimeout(() => {
+            changePasswordModal.classList.add('hidden');
+          }, 2000);
+        } else {
+          changePasswordMsg.textContent = data.error || 'Gagal mengubah password.';
+          changePasswordMsg.style.color = '#e23b3b';
+        }
+      } catch (err) {
+        changePasswordMsg.textContent = 'Terjadi kesalahan jaringan.';
+        changePasswordMsg.style.color = '#e23b3b';
+      }
     });
   }
 

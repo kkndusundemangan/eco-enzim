@@ -9,9 +9,9 @@
     .card{width:min(460px,100%);background:rgba(255,255,255,.95);color:#0f172a;border-radius:24px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
     h1{margin-top:0;font-size:1.8rem;color:#031a2e;text-align:center;margin-bottom:.5rem}
     p{color:#475569;line-height:1.6;text-align:center;margin-bottom:1.5rem}
-    input{width:100%;padding:1rem 1.2rem;border:2px solid #e2e8f0;border-radius:12px;outline:none;font-size:1rem;transition:border-color .3s ease, box-shadow .3s ease;box-sizing:border-box;}
+    input{margin-bottom:1rem;width:100%;padding:1rem 1.2rem;border:2px solid #e2e8f0;border-radius:12px;outline:none;font-size:1rem;transition:border-color .3s ease, box-shadow .3s ease;box-sizing:border-box;}
     input:focus{border-color:#0284c7;box-shadow:0 0 0 4px rgba(2,132,199,.15)}
-    button{margin-top:1.2rem;width:100%;padding:1rem 1.2rem;border:0;border-radius:12px;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
+    button{width:100%;padding:1rem 1.2rem;border:0;border-radius:12px;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
     button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,132,199,.3)}
     .note{font-size:.9rem;margin-top:1rem;color:#64748b;text-align:center}
     .back-link{display:block;text-align:center;margin-top:1.5rem;color:#0284c7;text-decoration:none;font-weight:600;transition:color .2s ease}
@@ -22,42 +22,53 @@
 <body>
   <div class="card">
     <h1>Mode Admin</h1>
-    <p>Masukkan password untuk membuka akses edit narasi, gambar, dan link YouTube.</p>
+    <p>Masukkan username dan password untuk membuka akses edit narasi, gambar, dan link YouTube.</p>
     <form id="admin-login-form">
-      <input id="admin-password" type="password" placeholder="Ketik password admin" required />
-      <button type="submit">Masuk ke Mode Edit</button>
+      <input id="admin-username" type="text" placeholder="Username" required />
+      <input id="admin-password" type="password" placeholder="Password" required />
+      <button type="submit" id="login-btn">Masuk ke Mode Edit</button>
     </form>
-    <p class="note">Password demo: <strong>demangan2026</strong></p>
+    <p class="note">Akun demo: <strong>admin</strong> / <strong>demangan2026</strong></p>
     <p id="admin-message"></p>
     <a href="index.html" class="back-link">← Kembali ke Halaman Utama</a>
   </div>
   <script>
-    // Fungsi untuk menghitung SHA-256 hash
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-      return hashHex;
-    }
-
     const form = document.getElementById('admin-login-form');
     const msg = document.getElementById('admin-message');
+    const btn = document.getElementById('login-btn');
+    
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
-      const pass = document.getElementById('admin-password').value;
-      const hash = await sha256(pass);
+      msg.textContent = '';
       
-      // Hash dari "demangan2026"
-      const expectedHash = "f5f4131c8a2ed97e2806046f68da08fa2d0c3be324aafea465ba77517fab770a";
+      const user = document.getElementById('admin-username').value;
+      const pass = document.getElementById('admin-password').value;
+      
+      btn.disabled = true;
+      btn.textContent = 'Memeriksa...';
 
-      if (hash === expectedHash) {
-        sessionStorage.setItem('ecoEnzimAdmin', 'true');
-        // Menyimpan status login dengan token statis atau hash agar script.js bisa memvalidasi
-        window.location.href = 'index.html?owner=demangan2026';
-      } else {
-        msg.textContent = 'Password salah. Coba lagi.';
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.token) {
+          sessionStorage.setItem('ecoEnzimToken', data.token);
+          window.location.href = 'index.html';
+        } else {
+          msg.textContent = data.error || 'Username atau password salah.';
+          msg.style.color = '#e23b3b';
+        }
+      } catch (e) {
+        msg.textContent = 'Gagal terhubung ke server. Coba lagi.';
         msg.style.color = '#e23b3b';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Masuk ke Mode Edit';
       }
     });
   </script>

@@ -140,6 +140,7 @@
 <p class="save-status" id="save-status">Status: Belum ada perubahan disimpan.</p>
 <div class="owner-actions inline">
 <a class="btn secondary light small" href="admin.html">Menu Admin</a>
+<button class="btn secondary light small" id="change-password-btn" type="button">Ganti Password</button>
 <button class="btn secondary light small" id="logout-admin" type="button">Keluar</button>
 <button class="btn secondary light small" id="clear-preview" type="button">Reset</button>
 </div>
@@ -337,6 +338,19 @@
 </div>
 <button aria-label="Gambar berikutnya" class="preview-nav preview-next" id="preview-next">›</button>
 </div>
+</div>
+</div>
+<div aria-hidden="true" class="preview-modal hidden" id="change-password-modal" style="z-index: 10000;">
+<div class="preview-backdrop"></div>
+<div aria-modal="true" class="preview-panel" role="dialog" style="max-width: 400px; padding: 24px; text-align: left;">
+<button aria-label="Tutup" class="preview-close" id="change-password-close">×</button>
+<h3 style="margin-top:0; color:#031a2e; margin-bottom: 16px;">Ganti Password</h3>
+<form id="change-password-form" style="display:flex; flex-direction:column; gap:12px;">
+  <input type="password" id="cp-old" placeholder="Password Lama" required style="padding:10px; border:2px solid #e2e8f0; border-radius:8px; font-family: inherit; font-size: 1rem;">
+  <input type="password" id="cp-new" placeholder="Password Baru" required style="padding:10px; border:2px solid #e2e8f0; border-radius:8px; font-family: inherit; font-size: 1rem;">
+  <button type="submit" class="btn primary" style="margin-top: 8px;">Simpan Password Baru</button>
+</form>
+<p id="change-password-message" style="margin-top:12px; font-weight:600; text-align:center; font-size: 0.9rem;"></p>
 </div>
 </div>
 <input accept="image/*" id="img-file-input" style="display:none" type="file"/>

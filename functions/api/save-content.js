@@ -2,7 +2,7 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
   'Access-Control-Max-Age': '86400',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
 export async function onRequestOptions(context) {
@@ -11,8 +11,42 @@ export async function onRequestOptions(context) {
   });
 }
 
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verifyJWT(token, secret) {
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  const [header, payloadStr, signature] = parts;
+  const data = `${header}.${payloadStr}`;
+  const key = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']
+  );
+  let sigBase64 = signature.replace(/-/g, '+').replace(/_/g, '/');
+  while (sigBase64.length % 4) sigBase64 += '=';
+  const sigBytes = new Uint8Array(atob(sigBase64).split('').map(c => c.charCodeAt(0)));
+  const isValid = await crypto.subtle.verify('HMAC', key, sigBytes, new TextEncoder().encode(data));
+  if (!isValid) return null;
+  try {
+    const payload = JSON.parse(decodeURIComponent(escape(atob(payloadStr.replace(/-/g, '+').replace(/_/g, '/')))));
+    if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch (e) { return null; }
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+  }
+  const token = authHeader.split(' ')[1];
+
   const githubToken = env.GITHUB_TOKEN;
   const githubOwner = env.GITHUB_OWNER;
   const githubRepo = env.GITHUB_REPO;
@@ -32,6 +66,13 @@ export async function onRequestPost(context) {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
+  }
+
+  const jwtSecret = env.JWT_SECRET || await sha256(githubToken);
+  const payloadData = await verifyJWT(token, jwtSecret);
+  
+  if (!payloadData || !payloadData.username) {
+    return new Response(JSON.stringify({ error: 'Invalid or expired token' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 
   let body;
