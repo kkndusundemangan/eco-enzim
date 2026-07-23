@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const progressInterval = simulateProgress(true, 3000);
 
     const saveViaCloudflare = async () => {
-      const response = await fetch('/api/save-content', {
+      const response = await fetch('https://eco-enzim.pages.dev/api/save-content', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newPass = document.getElementById('cp-new').value;
 
       try {
-        const response = await fetch('/api/change-password', {
+        const response = await fetch('https://eco-enzim.pages.dev/api/change-password', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
