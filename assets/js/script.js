@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let saveTimer = null;
   const state = {
     texts: {},
-    images: {}
+    images: {},
+    galleryItems: null,
+    videoItems: null
   };
 
   // UI Elements for Progress and Toolbar
@@ -130,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   const buildDefaultState = () => {
+    state.galleryItems = [{ id: 'gal1', imageKey: 'gallery1', captionKey: 'gallery1Caption' },{ id: 'gal2', imageKey: 'gallery2', captionKey: 'gallery2Caption' },{ id: 'gal3', imageKey: 'gallery3', captionKey: 'gallery3Caption' }];
+    state.videoItems = [{ id: 'vid1', urlKey: 'youtube' }];
     document.querySelectorAll('.editable-text').forEach((el) => {
       const key = el.getAttribute('data-edit-key');
       if (key) {
@@ -157,12 +161,121 @@ document.addEventListener('DOMContentLoaded', function () {
     if (payload && payload.images) {
       state.images = { ...state.images, ...payload.images };
     }
+    if (payload && payload.galleryItems) state.galleryItems = payload.galleryItems;
+    if (payload && payload.videoItems) state.videoItems = payload.videoItems;
     if (payload && payload.updatedAt) {
       state.updatedAt = payload.updatedAt;
     }
   };
 
+  
+  const renderDynamicContent = () => {
+    const galWrap = document.getElementById('dynamic-gallery-wrap');
+    const galBtns = document.getElementById('dynamic-gallery-buttons');
+    if (galWrap && state.galleryItems) {
+      galWrap.innerHTML = '';
+      if (galBtns) galBtns.innerHTML = '';
+      state.galleryItems.forEach((item, index) => {
+        const figure = document.createElement('figure');
+        figure.className = 'gallery-item';
+        figure.style.position = 'relative';
+        if (ownerMode) {
+          figure.innerHTML += '<button class="delete-gal-btn" data-idx="' + index + '" style="position:absolute;top:8px;right:8px;z-index:10;background:red;color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;">&times;</button>';
+          if (galBtns) {
+            galBtns.innerHTML += '<button class="btn secondary light owner-trigger" data-target="' + item.imageKey + '" type="button">Ganti Galeri ' + (index+1) + '</button>\n';
+          }
+        }
+        figure.innerHTML += '<img alt="Galeri ' + (index+1) + '" class="editable-image" data-caption="" data-image-key="' + item.imageKey + '" id="' + item.id + '" src="' + (state.images[item.imageKey] || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7') + '"/>';
+        figure.innerHTML += '<figcaption class="image-caption editable-text" data-edit-key="' + item.captionKey + '">' + (state.texts[item.captionKey] || 'Teks Galeri '+(index+1)) + '</figcaption>';
+        galWrap.appendChild(figure);
+      });
+      if (ownerMode) {
+        if (galBtns) galBtns.innerHTML += '<button class="btn secondary" id="add-gal-btn" type="button" style="display:block;margin-top:10px;">+ Tambah Foto Dokumentasi</button>';
+      }
+    }
+
+    const vidWrap = document.getElementById('dynamic-videos-wrap');
+    if (vidWrap && state.videoItems) {
+      vidWrap.innerHTML = '';
+      state.videoItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'video-item';
+        div.style.position = 'relative';
+        div.style.marginBottom = '20px';
+        if (ownerMode) {
+          div.innerHTML += '<button class="delete-vid-btn" data-idx="' + index + '" style="position:absolute;top:-10px;right:-10px;z-index:10;background:red;color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;">&times;</button>';
+        }
+        div.innerHTML += '<iframe allowfullscreen="" frameborder="0" src="' + (state.texts[item.urlKey] || '') + '" style="width:100%; aspect-ratio:16/9; border-radius:16px;"></iframe>';
+        vidWrap.appendChild(div);
+      });
+      if (ownerMode) {
+         vidWrap.innerHTML += '<button class="btn secondary" id="add-vid-btn" type="button" style="margin-top:10px;">+ Tambah Video</button>';
+      }
+    }
+  };
+
+  const rebindDynamicEvents = () => {
+    // update array
+    const newGalEls = Array.from(document.querySelectorAll('.gallery .editable-image, #usage-photo'));
+    galleryImageElements.length = 0;
+    newGalEls.forEach(el => galleryImageElements.push(el));
+    
+    // Attach gallery click
+    document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+      img.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (editingText) return;
+        showImagePreview(index);
+      });
+    });
+
+    if (ownerMode) {
+      document.querySelectorAll('.delete-gal-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (confirm('Hapus foto ini?')) {
+            const idx = parseInt(btn.dataset.idx);
+            state.galleryItems.pop(idx);
+            applyStateToDom();
+            scheduleSave();
+          }
+        });
+      });
+      document.querySelectorAll('.delete-vid-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (confirm('Hapus video ini?')) {
+            const idx = parseInt(btn.dataset.idx);
+            state.videoItems.pop(idx);
+            applyStateToDom();
+            scheduleSave();
+          }
+        });
+      });
+      const addGal = document.getElementById('add-gal-btn');
+      if (addGal) {
+        addGal.addEventListener('click', () => {
+          const newId = 'gal' + Date.now();
+          state.galleryItems.push({ id: newId, imageKey: newId, captionKey: newId + 'Caption' });
+          applyStateToDom();
+          scheduleSave();
+        });
+      }
+      
+      const addVid = document.getElementById('add-vid-btn');
+      if (addVid) {
+        addVid.addEventListener('click', () => {
+          const newId = 'vid' + Date.now();
+          state.videoItems.push({ id: newId, urlKey: newId + 'Url' });
+          applyStateToDom();
+          scheduleSave();
+        });
+      }
+    }
+  };
+
   const applyStateToDom = () => {
+    renderDynamicContent();
     document.querySelectorAll('.editable-text').forEach((el) => {
       const key = el.getAttribute('data-edit-key');
       if (key && state.texts[key] !== undefined) {
@@ -186,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (ytIframe && state.texts['youtube']) {
       ytIframe.src = state.texts['youtube'];
     }
+    rebindDynamicEvents();
   };
 
   // Toggle editing UI state: enable/disable contenteditable on editable elements
@@ -236,6 +350,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const payload = {
       texts: state.texts,
       images: state.images,
+      galleryItems: state.galleryItems,
+      videoItems: state.videoItems,
       updatedAt: new Date().toISOString()
     };
 
@@ -487,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewPrev = document.getElementById('preview-prev');
   const previewNext = document.getElementById('preview-next');
 
-  const galleryImageElements = Array.from(document.querySelectorAll('.gallery .editable-image, #usage-photo'));
+  let galleryImageElements = Array.from(document.querySelectorAll('.gallery .editable-image, #usage-photo'));
   const stepPopupElements = Array.from(document.querySelectorAll('.step-card[data-popup-key]'));
   let currentImageIndex = 0;
 

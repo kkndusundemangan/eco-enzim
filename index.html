@@ -118,9 +118,11 @@
 <button class="btn secondary light" id="toggle-edit-text" type="button">1. Buka Mode Edit Teks</button>
 <button class="btn secondary light owner-trigger" data-target="logo" type="button">Ganti Logo Utama</button>
 <button class="btn secondary light owner-trigger" data-target="product" type="button">Ganti Foto Produk</button>
+<div id="dynamic-gallery-buttons" style="display:inline;">
 <button class="btn secondary light owner-trigger" data-target="gallery1" type="button">Ganti Galeri 1</button>
 <button class="btn secondary light owner-trigger" data-target="gallery2" type="button">Ganti Galeri 2</button>
 <button class="btn secondary light owner-trigger" data-target="gallery3" type="button">Ganti Galeri 3</button>
+</div>
 <button class="btn secondary light owner-trigger" data-target="usage" type="button">Ganti Foto Panduan</button>
 </div>
 </div>
@@ -283,13 +285,17 @@
 <h2 class="editable-text" contenteditable="false" data-edit-key="docsTitle">Proses gotong royong warga Demangan</h2>
 <p class="editable-text" contenteditable="false" data-edit-key="docsText">Kekompakan warga adalah kunci suksesnya gerakan lingkungan ini. Melihat langsung proses pemotongan, pencampuran, hingga pengemasan membuat semangat kebersamaan semakin terasa.</p>
 </div>
-<div class="video-wrap reveal">
+<div class="video-wrap reveal" id="dynamic-videos-wrap">
+<!-- Videos will be injected here by JS -->
+<div class="video-item" data-vid-id="vid1">
 <iframe allowfullscreen="" frameborder="0" id="video-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Dokumentasi"></iframe>
 </div>
-<div class="video-controls reveal">
-<span class="admin-hint editable-text" contenteditable="false" data-edit-key="adminHint">Admin dapat mengubah narasi dan foto melalui panel edit.</span>
 </div>
-<div class="gallery reveal">
+<div class="video-controls reveal" id="video-controls-wrap">
+<span class="admin-hint editable-text" contenteditable="false" data-edit-key="adminHint">Admin dapat menambahkan video dan foto melalui panel di bawah ini.</span>
+</div>
+<div class="gallery reveal" id="dynamic-gallery-wrap">
+<!-- Gallery items will be injected here by JS -->
 <figure class="gallery-item">
 <img alt="Galeri 1" class="editable-image" data-caption="Galeri 1: Proses pembuatan dan dokumentasi lapangan" data-image-key="gallery1" id="gal1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"/>
 <figcaption class="image-caption editable-text" contenteditable="false" data-edit-key="gallery1Caption">Galeri 1: Proses pembuatan dan dokumentasi lapangan</figcaption>

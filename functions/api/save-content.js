@@ -130,6 +130,8 @@ export async function onRequestPost(context) {
   const payload = {
     texts: body.texts,
     images: body.images,
+    galleryItems: body.galleryItems,
+    videoItems: body.videoItems,
     updatedAt: new Date().toISOString()
   };
 
