@@ -134,7 +134,15 @@ export async function onRequestPost(context) {
   };
 
   const encodeUtf8Base64 = (text) => {
-    return btoa(unescape(encodeURIComponent(text)));
+    // encodeURIComponent throws on very large strings, and unescape is deprecated.
+    // Use TextEncoder and chunked fromCharCode instead.
+    const bytes = new TextEncoder().encode(text);
+    let binary = '';
+    const chunk = 0x8000; // 32768
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
   };
 
   const putResponse = await fetch(apiUrl, {

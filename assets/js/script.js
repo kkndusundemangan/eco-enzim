@@ -215,12 +215,21 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const persistLocalFallback = () => {
-    Object.entries(state.texts).forEach(([key, value]) => {
-      localStorage.setItem(`ecoEnzimText:${key}`, value);
-    });
-    Object.entries(state.images).forEach(([key, value]) => {
-      localStorage.setItem(`ecoEnzimAsset:${key}`, value);
-    });
+    try {
+      Object.entries(state.texts).forEach(([key, value]) => {
+        localStorage.setItem(`ecoEnzimText:${key}`, value);
+      });
+      Object.entries(state.images).forEach(([key, value]) => {
+        localStorage.setItem(`ecoEnzimAsset:${key}`, value);
+      });
+      document.querySelectorAll('.editable-image').forEach((img) => {
+        if (img.dataset.previewName) {
+          localStorage.setItem(`ecoEnzimAssetName:${img.id}`, img.dataset.previewName);
+        }
+      });
+    } catch (e) {
+      console.warn('Gagal menyimpan fallback lokal (mungkin limit size gambar terlalu besar):', e);
+    }
   };
 
   const saveContent = async () => {
@@ -478,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const previewPrev = document.getElementById('preview-prev');
   const previewNext = document.getElementById('preview-next');
 
-  const galleryImageElements = Array.from(document.querySelectorAll('.gallery .editable-image'));
+  const galleryImageElements = Array.from(document.querySelectorAll('.gallery .editable-image, #usage-photo'));
   const stepPopupElements = Array.from(document.querySelectorAll('.step-card[data-popup-key]'));
   let currentImageIndex = 0;
 
