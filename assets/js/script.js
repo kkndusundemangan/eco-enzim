@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         galWrap.appendChild(figure);
       });
       if (ownerMode) {
-        if (galBtns) galBtns.innerHTML += '<button class="btn secondary light" id="add-gal-btn" type="button" style="display:block;margin-top:10px;">+ Tambah Foto Dokumentasi</button>';
+        if (galWrap) galWrap.innerHTML += '<div style="grid-column: 1 / -1; display:flex; justify-content:center;"><button class="btn secondary light" id="add-gal-btn" type="button" style="margin-top:10px;">+ Tambah Foto Dokumentasi</button></div>';
       }
     }
 
@@ -221,11 +221,12 @@ document.addEventListener('DOMContentLoaded', function () {
     newGalEls.forEach(el => galleryImageElements.push(el));
     
     // Attach gallery click
-    document.querySelectorAll('.gallery-item img').forEach((img, index) => {
+    document.querySelectorAll('.gallery-item img').forEach((img) => {
       img.addEventListener('click', (event) => {
         event.stopPropagation();
         if (editingText) return;
-        showImagePreview(index);
+        const idx = galleryImageElements.indexOf(img);
+        if (idx > -1) showImagePreview(idx);
       });
     });
 
@@ -250,6 +251,12 @@ document.addEventListener('DOMContentLoaded', function () {
             applyStateToDom();
             scheduleSave();
           }
+        });
+      });
+      document.querySelectorAll('#dynamic-gallery-buttons .owner-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentTarget = btn.dataset.target;
+          fileInput.click();
         });
       });
       const addGal = document.getElementById('add-gal-btn');
