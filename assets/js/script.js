@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
           e.preventDefault();
           if (confirm('Hapus foto ini?')) {
             const idx = parseInt(btn.dataset.idx);
-            state.galleryItems.pop(idx);
+            state.galleryItems.splice(idx, 1);
             applyStateToDom();
             scheduleSave();
           }
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
           e.preventDefault();
           if (confirm('Hapus video ini?')) {
             const idx = parseInt(btn.dataset.idx);
-            state.videoItems.pop(idx);
+            state.videoItems.splice(idx, 1);
             applyStateToDom();
             scheduleSave();
           }
@@ -405,7 +405,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ownerMode) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      saveContent();
+      persistLocalFallback();
+      setSaveStatus('Terdapat perubahan yang belum disimpan ke server. Klik Simpan Semua Perubahan.', true);
     }, 400);
   };
 
@@ -531,11 +532,9 @@ document.addEventListener('DOMContentLoaded', function () {
           const ytIframe = document.getElementById('video-iframe');
           if (ytIframe) ytIframe.src = embedLink;
           
-          const saved = await saveContent();
-          if (saved) {
-            ytInput.value = '';
-            ytInput.placeholder = 'Berhasil diterapkan!';
-          }
+          scheduleSave();
+          ytInput.value = '';
+          ytInput.placeholder = 'Berhasil diterapkan!';
         } else {
           alert('Link YouTube tidak valid. Gunakan format yang benar.');
         }
@@ -552,11 +551,9 @@ document.addEventListener('DOMContentLoaded', function () {
         
         state.texts['shopLink'] = link;
         
-        const saved = await saveContent();
-        if (saved) {
-          shopInput.value = '';
-          shopInput.placeholder = 'Link Toko berhasil diterapkan!';
-        }
+        scheduleSave();
+        shopInput.value = '';
+        shopInput.placeholder = 'Link Toko berhasil diterapkan!';
       });
     }
   }
@@ -587,7 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
       state.images[currentTarget] = dataUrl;
       persistLocalFallback();
       scheduleSave();
-      alert(`Gambar siap dipakai. Nama preview otomatis: ${safeName}`);
+      alert(`Gambar siap dipakai. Nama preview otomatis: ${safeName}\n\nPerubahan baru disimpan lokal. Jangan lupa klik "Simpan Semua Perubahan" agar tampil di publik!`);
     };
     reader.readAsDataURL(file);
     fileInput.value = '';
@@ -602,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     el.addEventListener('blur', () => {
       state.texts[key] = el.innerHTML;
-      saveContent();
+      scheduleSave();
     });
   });
 
