@@ -534,6 +534,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
+
+    // Shop Link Logic
+    const applyShopBtn = document.getElementById('apply-shop-link');
+    const shopInput = document.getElementById('shop-link-input');
+    if (applyShopBtn && shopInput) {
+      applyShopBtn.addEventListener('click', async () => {
+        let link = shopInput.value.trim();
+        if (!link) return;
+        
+        state.texts['shopLink'] = link;
+        
+        const saved = await saveContent();
+        if (saved) {
+          shopInput.value = '';
+          shopInput.placeholder = 'Link Toko berhasil diterapkan!';
+        }
+      });
+    }
   }
 
   fileInput.addEventListener('change', (e) => {
@@ -730,10 +748,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (waBtn) {
     waBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const phone = waBtn.dataset.phone || '+628xxxxxxxxxx';
-      const text = encodeURIComponent('Halo, saya ingin mendapat informasi pembagian Eco Enzim gratis.');
-      const link = `https://wa.me/${phone.replace(/[^0-9+]/g, '')}?text=${text}`;
-      window.open(link, '_blank');
+      if (state.texts['shopLink']) {
+        window.open(state.texts['shopLink'], '_blank');
+      } else {
+        const phone = waBtn.dataset.phone || '+628xxxxxxxxxx';
+        const text = encodeURIComponent('Halo, saya ingin mendapat informasi pembagian Eco Enzim gratis.');
+        const link = `https://wa.me/${phone.replace(/[^0-9+]/g, '')}?text=${text}`;
+        window.open(link, '_blank');
+      }
     });
   }
 
